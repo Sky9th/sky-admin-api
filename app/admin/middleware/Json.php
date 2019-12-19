@@ -14,7 +14,6 @@ class Json
         } else {
             return $response;
         }
-        // 添加中间件执行代码
     }
 
 }

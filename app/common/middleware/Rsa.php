@@ -1,6 +1,6 @@
 <?php
 
-namespace app\app\middleware;
+namespace app\common\middleware;
 
 class Rsa
 {
