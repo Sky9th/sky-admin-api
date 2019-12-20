@@ -12,7 +12,7 @@
 function success($msg = '', $data = '', $url = '')
 {
     $result = [
-        'code' => 1,
+        'code' => 0,
         'msg' => $msg,
         'data' => $data,
         'url' => $url
@@ -28,7 +28,7 @@ function success($msg = '', $data = '', $url = '')
  * @param int $code
  * @return array
  */
-function error($msg = false, $data = [], $url = '', $code = 0)
+function error($msg = false, $data = [], $url = '', $code = -1)
 {
     if (!$msg) {
         $msg = '系统繁忙，请稍后再试';
