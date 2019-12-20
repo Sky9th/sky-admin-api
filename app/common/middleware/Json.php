@@ -1,6 +1,6 @@
 <?php
 
-namespace app\app\middleware;
+namespace app\common\middleware;
 
 class Json
 {
@@ -9,7 +9,7 @@ class Json
     {
         $response = $next($request);
         $code = $response->getCode();
-        if ($code === 200) {
+        if ($code == 200) {
             return json($response->getData());
         } else {
             return $response;

@@ -98,5 +98,4 @@ W7yJRrvQ7xSMZNFKJkebx+9Vg0TOef8nWIjU3E1tGSY=
         return base64_encode($crypted);
     }
 
-
 }
