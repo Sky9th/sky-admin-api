@@ -13,7 +13,7 @@ use think\Model;
 class Common extends Model
 {
 
-    public $allowField = true;
+    public $allowField = [];
     public $visibleField = [];
     public $order = 'id desc';
 

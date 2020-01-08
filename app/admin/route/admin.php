@@ -10,9 +10,9 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
+Route::rest('delete', ['DELETE', '', 'destroy']);
+
 Route::group(function () {
     Route::rule('login', 'auth/login');
-})->allowCrossDomain([
-    'Access-Control-Allow-Origin' => '*',
-    'Access-Control-Allow-Headers' => 'Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With, Noncestr, Sessionkey, Signature, Timestamp'
-])->middleware(\app\common\middleware\Rsa::class)->middleware(\app\common\middleware\Json::class);
+    Route::resource('module', 'module');
+});
