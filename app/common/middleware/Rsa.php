@@ -30,12 +30,6 @@ W7yJRrvQ7xSMZNFKJkebx+9Vg0TOef8nWIjU3E1tGSY=
 
     public function handle($request, \Closure $next)
     {
-        $server = $request->server();
-
-        if (strtoupper($server['REQUEST_METHOD']) == 'OPTIONS') {
-            return $next($request);
-        }
-
         $header = $request->header();
 
         if (!(isset($header['timestamp']) && isset($header['signature']))) {

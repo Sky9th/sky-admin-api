@@ -16,12 +16,12 @@ class Auth {
      * 登陆接口
      */
     public function login(){
-        $phone = input('post.username');
+        $username = input('post.username');
         $password = input('post.password');;
         $code = input('post.code');
-        if( $code == cache('api_login_code_'.$phone)){
+        if ($code == cache('api_login_code_' . $username)) {
             $model = new User();
-            $user = $model->where('username', $phone)->where('type', 1)->find();
+            $user = $model->where('username', $username)->where('type', 0)->find();
             if( !$user ){
                 return error('账号未注册');
             }
@@ -39,51 +39,12 @@ class Auth {
                 $sessionKey = UserAuth::session($id, [
                     'user_id' => $id
                 ], 'web');
-                return success('登陆成功','',['sessionKey'=>$sessionKey]);
+                return success('登陆成功', ['sessionKey' => $sessionKey]);
             }else{
                 return error('');
             }
         }else{
             return error('验证码错误');
-        }
-    }
-
-    /**
-     * 注册
-     * @throws
-     */
-    public function register(){
-        return error('注册通道已关闭');
-        $phone = input('post.phone');
-        $password = input('post.password');
-        $repassword = input('post.repassword');
-        $code = input('post.code');
-        if($password != $repassword){
-            return error('两次密码不一致');
-        }
-        if( $code === cache('api_login_code_'.$phone) ) {
-            cache('api_login_code_'.$phone, null);
-            $model = new User();
-            $exist = $model->where('phone', $phone)->count();
-            if( $exist > 0 ){
-                $this->error('该手机号码已注册');
-            }else{
-                $seed = rand(1000,9999);
-                $encrypt_key = config('static.encrypt_key');
-                $encode = $password.$seed.$encrypt_key;
-                $res = $model->save(['phone'=>$phone, 'type'=>1, 'seed'=>$seed, 'password' => $encode]);
-                $id = $model->id;
-                if( !$res ){
-                    $this->error('请稍后再试');
-                }
-
-                $sessionKey = UserLogic::session($id, [
-                    'user_id' => $id
-                ]);
-                $this->success('','', ['sessionKey'=>$sessionKey,'id'=>$id]);
-            }
-        }else{
-            $this->error('验证码错误');
         }
     }
 
@@ -123,23 +84,13 @@ class Auth {
     }
 
     /**
-     * 登录短信接口
-     * @param int phone 手机号码
-     * @return array
-     */
-    public function sms(){
-        $phone = input('post.phone');
-        $res = Notice::login($phone);
-        return $res;
-    }
-
-    /**
      * 验证用户登录凭据是否有效
      * @param string sessionKey
      * @return array
+     * @throws
      */
     public function check(){
-        $session = UserLogic::checkSession();
+        $session = UserAuth::checkSession();
         if( $session ){
             $user_id = $session['user_id'];
             $user = User::where('id', $user_id)->find();
@@ -155,7 +106,7 @@ class Auth {
      * @return array
      */
     public function logout(){
-        UserLogic::logout();
+        UserAuth::logout();
         return success();
     }
 
