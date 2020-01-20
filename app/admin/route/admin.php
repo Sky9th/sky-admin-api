@@ -16,3 +16,8 @@ Route::group(function () {
     Route::rule('login', 'auth/login');
     Route::resource('module', 'module');
 });
+
+// 需要经过登录验证的接口，通过Auth中间件做登录鉴权
+Route::group(function () {
+    Route::rule('user/getPermissionInfo', 'user/getPermissionInfo');
+})->middleware(\app\common\middleware\Auth::class);
