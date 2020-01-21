@@ -9,13 +9,12 @@
  * @param string $url
  * @return array
  */
-function success($msg = '', $data = '', $url = '')
+function success($msg = '', $data = '')
 {
     $result = [
         'code' => 0,
         'msg' => $msg,
-        'data' => $data,
-        'url' => $url
+        'data' => $data
     ];
     return $result;
 }
@@ -28,7 +27,7 @@ function success($msg = '', $data = '', $url = '')
  * @param int $code
  * @return array
  */
-function error($msg = false, $data = [], $url = '', $code = -1)
+function error($msg = false, $data = [], $code = -1)
 {
     if (!$msg) {
         $msg = '系统繁忙，请稍后再试';
@@ -36,12 +35,10 @@ function error($msg = false, $data = [], $url = '', $code = -1)
     $result = [
         'code' => $code,
         'msg' => $msg,
-        'data' => $data,
-        'url' => $url
+        'data' => $data
     ];
     return $result;
 }
-
 
 /**
  * 获取图片路径
@@ -70,4 +67,38 @@ function get_image($id, $url = false)
         return $src[0];
     }
     return $src;
+}
+
+/**
+ * 把返回的数据集转换成Tree
+ * @param array $list 要转换的数据集
+ * @param string $pk 主键
+ * @param string $child 子键
+ * @param string $pid parent标记字段
+ * @param string $root 父级ID
+ * @return array
+ */
+function list_to_tree($list, $pk='id', $pid = 'pid', $child = 'children', $root = '0') {
+    // 创建Tree
+    $tree = array();
+    if(is_array($list)) {
+        // 创建基于主键的数组引用
+        $refer = array();
+        foreach ($list as $key => $data) {
+            $refer[$data[$pk]] =& $list[$key];
+        }
+        foreach ($list as $key => $data) {
+            // 判断是否存在parent
+            $parentId =  $data[$pid];
+            if ($root == $parentId) {
+                $tree[] =& $list[$key];
+            }else{
+                if (isset($refer[$parentId])) {
+                    $parent =& $refer[$parentId];
+                    $parent[$child][] =& $list[$key];
+                }
+            }
+        }
+    }
+    return $tree;
 }

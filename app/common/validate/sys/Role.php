@@ -10,16 +10,12 @@ namespace app\common\validate\sys;
 
 use think\Validate;
 
-class Module extends Validate
+class Role extends Validate
 {
 
     protected $rule = [
         'title|名称' => 'require',
         'name|标识' => 'require',
-        //'type|模块类型' => 'require',
-        //'src|真实路径' => 'require',
-        'visible|是否可见' => 'require',
-        //'module|模块' => 'require',
     ];
 
 }

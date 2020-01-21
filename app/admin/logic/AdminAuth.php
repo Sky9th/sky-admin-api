@@ -38,21 +38,21 @@ class AdminAuth {
     public function getPermissionInfo () {
 
         $name = $this->user['nickname'] ? : $this->user['username'];
-        list($menus, $permission) = $this->getPermissionAndMenu();
+        list($roles, $menus, $permission) = $this->getPermissionAndMenu();
 
-        $route = Route::where('permission', 'in', $permission)->select();
+        $route = Route::where('permission', 'in', $permission)->append(['meta'])->select();
+        $route = list_to_tree($route->toArray());
 
         $menu_ids = [];
         foreach ($menus as $menu) {
             $menu_ids[] = $menu['id'];
         }
         $api = Api::where('id','in',$menu_ids)->select();
-
         return [
             'userName' => $name,
-            'userRoles' => [],
+            'userRoles' => $roles,
             'userPermissions' => $permission,
-            'accessMenus' => $menu,
+            'accessMenus' => $menus,
             'accessRoutes' => $route,
             'accessApi' => $api,
             'avatarUrl' => ''
@@ -65,6 +65,7 @@ class AdminAuth {
      * @throws
      */
     private function getPermissionAndMenu () {
+        $roles = $this->user->roles->column('permission');
         $role_ids = $this->user->roles->column('id');
         $menu_ids = Db::table('sys_role_relation_menu')->where('role_id','in',$role_ids)->column('menu_id');
         $menus = Menu::where('id','in', $menu_ids)->select();
@@ -72,7 +73,8 @@ class AdminAuth {
         foreach ($menus as $key => $value) {
             $permission[] = $value['permission'];
         }
-        return [$menus, $permission];
+        $menus = list_to_tree($menus->toArray());
+        return [$roles, $menus, $permission];
     }
 
 }

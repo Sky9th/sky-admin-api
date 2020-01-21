@@ -12,9 +12,6 @@ use think\Model;
 
 class Common extends Model
 {
-
-    public $allowField = [];
-    public $visibleField = [];
     public $order = 'id desc';
 
     public function getStatusTextAttr($value, $data)
