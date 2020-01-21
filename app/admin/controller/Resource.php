@@ -41,7 +41,7 @@ class Resource
      */
     public function index()
     {
-        $list = $this->model->where(true)->visible($this->model->visibleField)->order($this->model->order)->paginate(15);
+        $list = $this->model->where(true)->order($this->model->order)->paginate(15);
         return success('', $list);
     }
 
@@ -53,7 +53,7 @@ class Resource
      */
     public function read($id)
     {
-        $info = $this->model->where(true)->visible($this->model->visibleField)->find($id);
+        $info = $this->model->where(true)->find($id);
         return success('', $info);
     }
 
@@ -69,9 +69,6 @@ class Resource
         $check = $this->validate->scene('save')->check($post);
         if (!$check) {
             return error($this->validate->getError());
-        }
-        if (is_array($this->model->allowField) && count($this->model->allowField) > 0) {
-            $this->model->allowField($this->model->allowField);
         }
         $res = $this->model->save($post);
         if ($res) {
@@ -96,10 +93,6 @@ class Resource
         $check = $this->validate->scene('update')->check($post);
         if (!$check) {
             return error($this->validate->getError());
-        }
-
-        if (is_array($this->model->allowField) && count($this->model->allowField) > 0) {
-            $this->model->allowField($this->model->allowField);
         }
         $data = $this->model->where('id', $id)->find();
         $res = $data->save($post);
