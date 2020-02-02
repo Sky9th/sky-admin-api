@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-Route::rest('delete', ['DELETE', '', 'destroy']);
+Route::rest('delete', ['DELETE', '/<id>', 'delete']);
 
 Route::group(function () {
     Route::rule('login', 'auth/login');
