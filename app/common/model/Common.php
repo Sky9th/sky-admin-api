@@ -57,4 +57,12 @@ class Common extends Model
         return 'http://' . $_SERVER['HTTP_HOST'] . get_file($file_id);
     }
 
+    public function getVisible(){
+        return $this->visible;
+    }
+
+    public function getReadOnly(){
+        return $this->readOnly();
+    }
+
 }
