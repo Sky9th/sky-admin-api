@@ -19,6 +19,10 @@ class Role extends Sys
         return $this->belongsToMany('menu', 'sys_role_relation_menu','menu_id','role_id');
     }
 
+    public function users () {
+        return $this->belongsToMany('app\common\model\common\User', 'sys_user_relation_role','user_id','role_id');
+    }
+
     public static function onBeforeWrite(Model $model)
     {
         //超级管理组不允许修改

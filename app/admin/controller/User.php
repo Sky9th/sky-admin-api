@@ -8,16 +8,37 @@
 namespace app\admin\controller;
 
 use app\admin\logic\AdminAuth;
+use think\facade\Db;
 
 class User extends Resource {
 
     public function __construct()
     {
-        $this->model = new \app\common\model\sys\Role();
-        $this->validate = new \app\common\validate\sys\Role();
+        $this->model = new \app\common\model\common\User();
+        $this->validate = new \app\common\validate\sys\User();
     }
 
-    public function getPermissionInfo() {
+    /**
+     * 根据管理组Id查询关联用户
+     * @return array
+     * @throws
+     */
+    public function indexByRoleId () {
+        $filter = json_decode(input('filter'), true);
+        $role_id = $filter['role_id'];
+        unset($filter['role_id']);
+        $alias = [];
+        foreach ($filter as $key => $value) {
+            $alias['a.'.$key] = $value;
+        }
+        $this->makeWhere($alias);
+        $this->makeOrder();
+        $this->getPerPage();
+        $list = Db::table($this->model->getTable())->visible($this->model->getVisible())->alias('a')->join('sys_user_relation_role b', 'a.id = b.user_id and b.role_id = '.$role_id)->where($this->where)->order($this->order)->paginate($this->list_row);
+        return success('',$list);
+    }
+
+    public function getPermissionInfo () {
         $user_id = request()->user_id;
         $admin_auth = new AdminAuth($user_id);
         $permission = $admin_auth->getPermissionInfo();
