@@ -14,8 +14,19 @@ class Role extends Validate
 {
 
     protected $rule = [
+        'id|编号' => 'lock',
         'title|名称' => 'require',
-        'name|标识' => 'require',
+        'permission|标识' => 'require',
     ];
+
+    protected $scene = [
+        'delete' => ['id']
+    ];
+
+    public function lock ($value, $rule, $data=[]){
+        if($value == '1'){
+            return '超级管理组不允许修改以及删除';
+        }
+    }
 
 }

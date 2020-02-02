@@ -8,6 +8,7 @@
 namespace app\common\model\sys;
 
 use app\common\model\Sys;
+use think\Model;
 
 class Role extends Sys
 {
@@ -16,5 +17,23 @@ class Role extends Sys
 
     public function menus () {
         return $this->belongsToMany('menu', 'sys_role_relation_menu','menu_id','role_id');
+    }
+
+    public static function onBeforeWrite(Model $model)
+    {
+        //超级管理组不允许修改
+        if($model->id == 1){
+            return false;
+        }
+        return true;
+    }
+
+    public static function onBeforeDelete(Model $model)
+    {
+        //超级管理组不允许删除
+        if($model->id == 1){
+            return false;
+        }
+        return true;
     }
 }
