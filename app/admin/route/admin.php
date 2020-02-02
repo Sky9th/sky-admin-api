@@ -19,6 +19,7 @@ Route::group(function () {
 // 需要经过登录验证的接口，通过Auth中间件做登录鉴权
 Route::group(function () {
     Route::rule('user/getPermissionInfo', 'user/getPermissionInfo');
+    Route::rule('user/indexByRoleId', 'user/indexByRoleId');
     Route::resource('roles', 'role');
     Route::resource('menus', 'menu');
     Route::resource('apis', 'api');
