@@ -102,3 +102,42 @@ function list_to_tree($list, $pk='id', $pid = 'pid', $child = 'children', $root 
     }
     return $tree;
 }
+
+
+/**
+ * 过滤特殊字符、语句
+ * @param $strParam
+ * @return string|string[]|null
+ */
+function filter_special_char($strParam){
+    $regex = "/|\$|\%|\^|\*|\?|\;|\'|\,|\(|\)|AND|SELECT|UNION|JOIN|WHERE|from|for|join|like|case|where|limit|offset|hex|group|update|insert|delete|by|char|drop|if|decode|ascii|instr|floor|exp|exec|concat|rand|extractvalue|database|table|exists|len|substr|user|create/i";  //and、or、select、union
+    return preg_replace($regex,"",$strParam);
+}
+
+/**
+ * 过滤xss
+ * @param $string
+ * @return string|string[]|null
+ */
+function filter_xss($string) {
+    $string = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/S', '', $string);
+    $param1 = Array('javascript', 'vbscript', 'expression', 'applet', 'meta', 'xml', 'blink', 'link', 'script', 'embed', 'object', 'iframe', 'frame', 'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base');
+    $param2 = Array('onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange', 'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect', 'oncopy', 'oncut', 'ondataavailable', 'ondatasetchanged', 'ondatasetcomplete', 'ondblclick', 'ondeactivate', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate', 'onfilterchange', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout', 'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete', 'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange', 'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload');
+    $param = array_merge($param1, $param2);
+    for ($i = 0; $i < sizeof($param); $i++) {
+        $pattern = '/';
+        for ($j = 0; $j < strlen($param[$i]); $j++) {
+            if ($j > 0) {
+                $pattern .= '(';
+                $pattern .= '(&#[x|X]0([9][a][b]);?)?';
+                $pattern .= '|(&#0([9][10][13]);?)?';
+                $pattern .= ')?';
+            }
+            $pattern .= $param[$i][$j];
+        }
+        $pattern .= '/i';
+        $string = preg_replace($pattern, ' ', $string);
+        $string = preg_replace('/\"/', '"', $string);
+    }
+    return $string;
+}

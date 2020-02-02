@@ -41,7 +41,27 @@ class Resource
      */
     public function index()
     {
-        $list = $this->model->where(true)->order($this->model->order)->paginate(15);
+        $filter = json_decode(input('filter'), true);
+        $per_page = input('get.per_page', config('static.list_row'));
+        $order = input('order');
+        $descending = input('descending');
+
+        //组成排序
+        if ($order) {
+            $sort = $order . ' ' .($descending == 'true' ? 'desc' : 'asc');
+        } else {
+            $sort = $this->model->order;
+        }
+
+        //对查询字符串进行安全过滤，过滤特殊符号，特定词语，以及XSS并且组成查询条件
+        $where = [];
+        foreach ($filter as $key => $value) {
+            $value = filter_xss(filter_special_char($value));
+            if(!$value) { continue; }
+            $where[] = [$key, 'like', '%'.$value.'%'];
+        }
+
+        $list = $this->model->where($where)->order($sort)->paginate($per_page);
         return success('', $list);
     }
 
