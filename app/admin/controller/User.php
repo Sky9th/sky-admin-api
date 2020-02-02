@@ -20,13 +20,12 @@ class User extends Resource {
 
     /**
      * 根据管理组Id查询关联用户
+     * @param int $role_id 管理组Id
      * @return array
      * @throws
      */
-    public function indexByRoleId () {
+    public function indexByRoleId ($role_id) {
         $filter = json_decode(input('filter'), true);
-        $role_id = $filter['role_id'];
-        unset($filter['role_id']);
         $alias = [];
         foreach ($filter as $key => $value) {
             $alias['a.'.$key] = $value;
