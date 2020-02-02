@@ -23,6 +23,10 @@ class Resource
     protected $model;
     protected $validate;
 
+    protected $where = false;
+    protected $order = false;
+    protected $list_row;
+
     protected $msg = [
         'save' => 'created success',
         'update' => 'update success',
@@ -41,27 +45,11 @@ class Resource
      */
     public function index()
     {
-        $filter = json_decode(input('filter'), true);
-        $per_page = input('get.per_page', config('static.list_row'));
-        $order = input('order');
-        $descending = input('descending');
+        $this->getPerPage();
+        $this->makeOrder();
+        $this->makeWhere();
 
-        //组成排序
-        if ($order) {
-            $sort = $order . ' ' .($descending == 'true' ? 'desc' : 'asc');
-        } else {
-            $sort = $this->model->order;
-        }
-
-        //对查询字符串进行安全过滤，过滤特殊符号，特定词语，以及XSS并且组成查询条件
-        $where = [];
-        foreach ($filter as $key => $value) {
-            $value = filter_xss(filter_special_char($value));
-            if(!$value) { continue; }
-            $where[] = [$key, 'like', '%'.$value.'%'];
-        }
-
-        $list = $this->model->where($where)->order($sort)->paginate($per_page);
+        $list = $this->model->where($this->where)->order($this->order)->paginate($this->list_row);
         return success('', $list);
     }
 
@@ -162,6 +150,64 @@ class Resource
             return error(lang($this->msg['non_status']));
         } else {
             return success(lang($this->msg['status']), ['id' => $id]);
+        }
+    }
+
+    /**
+     * 获取每页查询数量
+     * @param int $per_page
+     */
+    protected function getPerPage ($per_page = 0) {
+        if(!$per_page){
+            $per_page = input('get.per_page', config('static.list_row'));
+        }
+        if($per_page && in_array($per_page, config('static.list_row_range'))){
+            $this->list_row = $per_page;
+        }else{
+            $this->list_row =  config('static.list_row');
+        }
+    }
+
+    /**
+     * 组成排序
+     * @param $order
+     * @param $descending
+     */
+    protected function makeOrder ($order = false, $descending = false) {
+        if(!$order){
+            $order = input('order');
+            $descending = input('descending');
+        }
+        //组成排序
+        if(!$this->order){
+            if ($order) {
+                $sort = $order . ' ' .($descending == 'true' ? 'desc' : 'asc');
+            } else {
+                $sort = $this->model->order;
+            }
+            $this->order = $sort;
+        }
+    }
+
+    /**
+     * 组成查询条件
+     * @param $filter
+     */
+    protected function makeWhere ($filter = false) {
+        if(!$filter){
+            $filter = json_decode(input('filter'), true);
+        }
+        //对查询字符串进行安全过滤，过滤特殊符号，特定词语，以及XSS并且组成查询条件
+        if(!$this->where){
+            $where = [];
+            foreach ($filter as $key => $value) {
+                $value = filter_xss(filter_special_char($value));
+                if(!$value) { continue; }
+                $where[] = [$key, 'like', '%'.$value.'%'];
+            }
+            if(count($where) > 0){
+                $this->where = $where;
+            }
         }
     }
 
