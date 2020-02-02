@@ -131,25 +131,17 @@ class Resource
      */
     public function delete($id)
     {
-        $res = $this->model->where('id', $id)->delete();
-        if ($res) {
-            return success(lang($this->msg['delete']), ['id' => $id]);
-        } else {
-            return error(lang($this->msg['non_delete']));
+        if($id){
+            $ids = $id;
+        }else{
+            $ids = input('delete.ids/a');
         }
-    }
-
-
-    /**
-     * 批量删除数据
-     * @param $id
-     * @return array
-     * @throws
-     */
-    public function destroy()
-    {
-        $ids = input('delete.ids/a');
-        $res = $this->model->where('id', 'in', $ids)->delete();
+        $check = $this->validate->scene('delete')->check(['id'=>$ids]);
+        if (!$check) {
+            return error($this->validate->getError());
+        }
+        $this->model->where('id', 'in', $ids)->select();
+        $res = $this->model->delete();
         if ($res) {
             return success(lang($this->msg['delete']), ['id' => $ids]);
         } else {
