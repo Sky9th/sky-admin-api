@@ -48,7 +48,6 @@ class Resource
         $this->getPerPage();
         $this->makeOrder();
         $this->makeWhere();
-
         $list = $this->model->where($this->where)->order($this->order)->paginate($this->list_row);
         return success('', $list);
     }
@@ -198,7 +197,7 @@ class Resource
             $filter = json_decode(input('filter'), true);
         }
         //对查询字符串进行安全过滤，过滤特殊符号，特定词语，以及XSS并且组成查询条件
-        if(!$this->where){
+        if(!$this->where && is_array($filter)){
             $where = [];
             foreach ($filter as $key => $value) {
                 $value = filter_xss(filter_special_char($value));
