@@ -23,10 +23,18 @@ class Role extends Validate
         'delete' => ['id']
     ];
 
+    /**
+     * 超级管理组锁定修改
+     * @param $value
+     * @param $rule
+     * @param array $data
+     * @return string
+     */
     public function lock ($value, $rule, $data=[]){
-        if($value == '1'){
+        if (in_array(1, $value)) {
             return '超级管理组不允许修改以及删除';
         }
+        return true;
     }
 
 }

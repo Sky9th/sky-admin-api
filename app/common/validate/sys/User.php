@@ -14,7 +14,47 @@ class User extends Validate
 {
 
     protected $rule = [
-        'title|名称' => 'require',
+        'id' => 'lock',
+        'username|用户名' => 'require|length:4,25',
+        'password|密码' => 'requireWith:username|conflict',
+        'repassword|确认密码'=>'requireWith:username|confirm:password',
+        'email' => 'email',
     ];
+
+    protected $scene = [
+        'save' => ['username','password','repassword'],
+        'update' => ['password','repassword'],
+        'delete' => ['id']
+    ];
+
+    /**
+     * 密码验证
+     * @param $value
+     * @param $rule
+     * @param array $data
+     * @return bool
+     */
+    protected function conflict ($value, $rule, $data = []) {
+        if($value){
+            //TODO 密码复杂程度验证
+            return true;
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * 超级管理组锁定修改
+     * @param $value
+     * @param $rule
+     * @param array $data
+     * @return string
+     */
+    protected function lock ($value, $rule, $data=[]){
+        if( in_array(1, $value) ){
+            return '超级管理组不允许修改以及删除';
+        }
+        return true;
+    }
 
 }

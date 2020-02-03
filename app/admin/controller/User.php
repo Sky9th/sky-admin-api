@@ -33,10 +33,14 @@ class User extends Resource {
         $this->makeWhere($alias);
         $this->makeOrder();
         $this->getPerPage();
-        $list = Db::table($this->model->getTable())->visible($this->model->getVisible())->alias('a')->join('sys_user_relation_role b', 'a.id = b.user_id and b.role_id = '.$role_id)->where($this->where)->order($this->order)->paginate($this->list_row);
+        $list = Db::table($this->model->getTable())->visible($this->model->getVisible())->alias('a')->join('sys_user_relation_role b', 'a.id = b.user_id and b.role_id = '.$role_id, 'LEFT')->where($this->where)->order($this->order)->paginate($this->list_row);
         return success('',$list);
     }
 
+    /**
+     * 获取权限信息
+     * @return array
+     */
     public function getPermissionInfo () {
         $user_id = request()->user_id;
         $admin_auth = new AdminAuth($user_id);

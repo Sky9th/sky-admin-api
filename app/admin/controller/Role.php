@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 
 use think\Exception;
+use think\facade\Db;
 
 class Role extends Resource
 {
@@ -11,6 +12,25 @@ class Role extends Resource
     {
         $this->model = new \app\common\model\sys\Role();
         $this->validate = new \app\common\validate\sys\Role();
+    }
+
+    /**
+     * 根据用户Id查询关联管理组
+     * @param int $user_id 用户Id
+     * @return array
+     * @throws
+     */
+    public function indexByUserId ($user_id) {
+        $filter = json_decode(input('filter'), true);
+        $alias = [];
+        foreach ($filter as $key => $value) {
+            $alias['a.'.$key] = $value;
+        }
+        $this->makeWhere($alias);
+        $this->makeOrder();
+        $this->getPerPage();
+        $list = Db::table($this->model->getTable())->visible($this->model->getVisible())->alias('a')->join('sys_user_relation_role b', 'a.id = b.role_id and b.user_id = '.$user_id, 'LEFT')->where($this->where)->order($this->order)->paginate($this->list_row);
+        return success('',$list);
     }
 
     /**
@@ -52,9 +72,9 @@ class Role extends Resource
         }
         $role = $this->model->find($role_id);
         if ($action == 1) {
-            $res = $role->menus()->attach($user_id);
+            $res = $role->users()->attach($user_id);
         } else {
-            $res = $role->menus()->detach($user_id);
+            $res = $role->users()->detach($user_id);
         }
         return $res ? success() : error();
     }

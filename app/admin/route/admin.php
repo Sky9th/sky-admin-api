@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-Route::rest('delete', ['DELETE', '/<id>', 'delete']);
+Route::rest('delete', ['DELETE', '<id?>', 'delete']);
 
 Route::group(function () {
     Route::rule('login', 'auth/login');
@@ -23,6 +23,7 @@ Route::group(function () {
     Route::rule('user/indexByRoleId/:role_id', 'user/indexByRoleId');
     Route::rule('role/savePermission', 'role/savePermission');
     Route::rule('role/modifyUser', 'role/modifyUser');
+    Route::rule('role/indexByUserId/:user_id', 'role/indexByUserId');
     Route::resource('roles', 'role');
     Route::resource('menus', 'menu');
     Route::resource('apis', 'api');
