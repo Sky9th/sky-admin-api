@@ -116,10 +116,10 @@ class Resource
      * @return array
      * @throws
      */
-    public function delete($id)
+    public function delete($id = false)
     {
         if($id){
-            $ids = $id;
+            $ids = [$id];
         }else{
             $ids = input('delete.ids/a');
         }
@@ -127,8 +127,8 @@ class Resource
         if (!$check) {
             return error($this->validate->getError());
         }
-        $this->model->where('id', 'in', $ids)->select();
-        $res = $this->model->delete();
+        $list = $this->model->where('id', 'in', $ids)->select();
+        $res = $list->delete();
         if ($res) {
             return success(lang($this->msg['delete']), ['id' => $ids]);
         } else {
