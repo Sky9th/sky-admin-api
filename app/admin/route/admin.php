@@ -21,6 +21,8 @@ Route::group(function () {
     Route::rule('menu/indexByRoleId/:role_id', 'menu/indexByRoleId');
     Route::rule('user/getPermissionInfo', 'user/getPermissionInfo');
     Route::rule('user/indexByRoleId/:role_id', 'user/indexByRoleId');
+    Route::rule('role/savePermission', 'role/savePermission');
+    Route::rule('role/modifyUser', 'role/modifyUser');
     Route::resource('roles', 'role');
     Route::resource('menus', 'menu');
     Route::resource('apis', 'api');
