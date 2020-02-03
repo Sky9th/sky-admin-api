@@ -46,6 +46,7 @@ class UserAuth
             $sessionKey = Request::instance()->header()['sessionkey'];
         }
         $session = cache($sessionKey);
+        //TODO 检测是否已被登录
         if (!isset($session['expire_time'])) {
             return false;
         }
