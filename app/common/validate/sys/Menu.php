@@ -14,8 +14,8 @@ class Menu extends Validate
 {
 
     protected $rule = [
-        'title|标题' => 'require|length:4,10',
-        'path|路径' => 'require',
+        'title|标题' => 'require|length:2,10',
+        'path|路径' => 'requireIf:type,1',
         'icon|图标' => 'require',
         'permission|权限标识' => 'require',
         'sort|排序' => 'integer',
