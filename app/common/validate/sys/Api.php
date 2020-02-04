@@ -15,6 +15,12 @@ class Api extends Validate
 
     protected $rule = [
         'title|名称' => 'require',
+        'path|路径' => 'require',
+        'method|方法' => 'require'
+    ];
+
+    protected $scene = [
+        'delete' => ['']
     ];
 
 }
