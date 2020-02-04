@@ -62,7 +62,7 @@ class Common extends Model
     }
 
     public function getReadOnly(){
-        return $this->readOnly();
+        return $this->readOnly;
     }
 
 }
