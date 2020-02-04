@@ -4,6 +4,7 @@ namespace app\admin\logic;
 use app\common\model\common\User;
 use app\common\model\sys\Api;
 use app\common\model\sys\Menu;
+use app\common\model\sys\Role;
 use app\common\model\sys\Route;
 use think\facade\Db;
 
@@ -65,9 +66,14 @@ class AdminAuth {
      * @throws
      */
     private function getPermissionAndMenu () {
-        $roles = $this->user->roles->column('permission');
         $role_ids = $this->user->roles->column('id');
-        $menu_ids = Db::table('sys_role_relation_menu')->where('role_id','in',$role_ids)->column('menu_id');
+        if (in_array(SUPER_ROLE_ID, $role_ids)) {
+            $roles = Role::column('permission');
+            $menu_ids = Menu::column('id');
+        }else{
+            $roles = $this->user->roles->column('permission');
+            $menu_ids = Db::table('sys_role_relation_menu')->where('role_id','in',$role_ids)->column('menu_id');
+        }
         $menus = Menu::where('id','in', $menu_ids)->select();
         $permission = [];
         foreach ($menus as $key => $value) {
