@@ -14,7 +14,16 @@ class Menu extends Validate
 {
 
     protected $rule = [
-        'title|名称' => 'require',
+        'title|标题' => 'require|length:4,10',
+        'path|路径' => 'require',
+        'icon|图标' => 'require',
+        'permission|权限标识' => 'require',
+        'sort|排序' => 'integer',
+        'type|类型' => 'integer',
+    ];
+
+    protected $scene = [
+        'delete' => ['']
     ];
 
 }
