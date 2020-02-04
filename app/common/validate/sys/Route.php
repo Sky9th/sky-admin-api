@@ -18,9 +18,9 @@ class Route extends Validate
         'path|路径' => 'require',
         'permission|权限标识' => 'require',
         'component|组件标识' => 'require',
-        'sort|编码' => 'inter',
-        'is_lock|编码' => 'bool',
-        'cache|编码' => 'bool',
+        'sort|排序' => 'integer',
+        'is_lock|锁定' => 'bool',
+        'cache|缓存' => 'bool',
     ];
 
     protected $scene = [
