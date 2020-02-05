@@ -5,8 +5,9 @@
  * Date: 2019/1/7
  * Time: 10:11
  */
-namespace app\admin\controller;
+namespace app\admin\controller\sys;
 
+use app\admin\controller\Resource;
 use app\admin\logic\AdminAuth;
 use think\facade\Db;
 

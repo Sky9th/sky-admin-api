@@ -1,6 +1,7 @@
 <?php
+namespace app\admin\controller\sys;
 
-namespace app\admin\controller;
+use app\admin\controller\Resource;
 
 class Route extends Resource
 {
