@@ -1,6 +1,8 @@
 <?php
 
-namespace app\admin\controller;
+namespace app\admin\controller\sys;
+
+use app\admin\controller\Resource;
 
 class Module extends Resource
 {

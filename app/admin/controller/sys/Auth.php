@@ -5,7 +5,7 @@
  * Date: 2019/1/7
  * Time: 10:11
  */
-namespace app\admin\controller;
+namespace app\admin\controller\sys;
 
 use app\common\logic\UserAuth;
 use app\common\model\common\User;

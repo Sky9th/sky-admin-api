@@ -1,7 +1,7 @@
 <?php
+namespace app\admin\controller\sys;
 
-namespace app\admin\controller;
-
+use app\admin\controller\Resource;
 use think\Exception;
 use think\facade\Db;
 

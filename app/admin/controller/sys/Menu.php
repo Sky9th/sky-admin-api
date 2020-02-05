@@ -1,6 +1,7 @@
 <?php
+namespace app\admin\controller\sys;
 
-namespace app\admin\controller;
+use app\admin\controller\Resource;
 use app\common\model\sys\Role;
 
 class Menu extends Resource
