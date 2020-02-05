@@ -8,14 +8,14 @@
 
 namespace app\admin\controller;
 
-use app\common\model\Common;
-use think\Validate;
+use app\common\model\Common as CommonModel;
+use app\common\validate\Common as CommonValidate;
 
 /**
  * Class Resource
  * @package app\api\controller
- * @property Common $model
- * @property Validate $validate
+ * @property CommonModel $model
+ * @property CommonValidate $validate
  */
 class Resource
 {
@@ -37,6 +37,19 @@ class Resource
         'non_delete' => 'delete error',
         'non_status' => 'status error',
     ];
+
+    public function structure () {
+        $rules = $this->validate->getRule();
+        $fields = [];
+        foreach ($rules as $key => $value) {
+            list($field, $title) = explode('|', $key);
+            $fields[$field] = $title;
+        }
+        $search = $this->model->search;
+        $thead = $this->model->thead;
+        $form = $this->model->form;
+        return success('', ['field' => $fields, 'search' => $search, 'thead' => $thead, 'form' => $form]);
+    }
 
     /**
      * 查询列表
