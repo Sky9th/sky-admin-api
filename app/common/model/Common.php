@@ -12,6 +12,9 @@ use think\Model;
 
 class Common extends Model
 {
+    public $search = [];  //用于定义数据列表可搜索字段
+    public $thead = [];  //用于定义数据列表表头字段
+    public $form = [];  //用于定义数据列表表单字段
     public $order = 'id desc';
 
     public function getStatusTextAttr($value, $data)
