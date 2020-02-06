@@ -11,7 +11,10 @@ class Project extends Client {
     ];
     public $thead = ['title','description'];
     public $form = [
-        'title' => 'input'
+        'title' => 'input',
+        'link' => 'input',
+        'description' => 'textarea',
+        'content' => 'editor'
     ];
 
 }

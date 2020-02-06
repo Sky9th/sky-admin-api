@@ -14,7 +14,7 @@ Route::rest('structure', ['GET', 'structure', 'structure']);
 Route::rest('delete', ['DELETE', '<id?>', 'delete']);
 
 Route::group(function () {
-    Route::rule('login', 'auth/login');
+    Route::rule('login', 'sys.auth/login');
 });
 
 // 需要经过登录验证的接口，通过Auth中间件做登录鉴权
