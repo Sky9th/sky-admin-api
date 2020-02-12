@@ -33,4 +33,5 @@ Route::group(function () {
 
 
     Route::resource('projects', 'sky9th.project');
+    Route::resource('techs', 'sky9th.tech');
 })->middleware(\app\common\middleware\Auth::class);
