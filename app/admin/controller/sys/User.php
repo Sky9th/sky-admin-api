@@ -34,7 +34,9 @@ class User extends Resource {
         $this->makeWhere($alias);
         $this->makeOrder();
         $this->getPerPage();
-        $list = Db::table($this->model->getTable())->visible($this->model->getVisible())->alias('a')->join('sys_user_relation_role b', 'a.id = b.user_id and b.role_id = '.$role_id, 'LEFT')->where($this->where)->order($this->order)->paginate($this->list_row);
+        $visible = $this->model->getVisible();
+        $visible[] = 'role_id';
+        $list = Db::table($this->model->getTable())->visible($visible)->alias('a')->join('sys_user_relation_role b', 'a.id = b.user_id and b.role_id = '.$role_id, 'LEFT')->where($this->where)->order($this->order)->paginate($this->list_row);
         return success('',$list);
     }
 
