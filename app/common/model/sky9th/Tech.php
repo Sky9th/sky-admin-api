@@ -13,7 +13,7 @@ class Tech extends Client {
     public $form = [
         'title' => 'input',
         'version' => 'input',
-        'link' => 'url',
+        'link' => 'input',
     ];
 
 }
