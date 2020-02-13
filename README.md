@@ -1,52 +1,30 @@
-ThinkPHP 6.0
+SkyAdmin
 ===============
 
-> 运行环境要求PHP7.1+。
+### 相关项目
+* [SkyAdminApi](https://github.com/Sky9th/sky-admin-api) PHP后端
+* [SkyAdminVue](https://github.com/Sky9th/sky-admin-vue) Vue2.0前端
 
-## 主要新特性
+## 主要功能
 
-* 采用`PHP7`强类型（严格模式）
-* 支持更多的`PSR`规范
-* 原生多应用支持
-* 更强大和易用的查询
-* 全新的事件系统
-* 模型事件和数据库事件统一纳入事件系统
-* 模板引擎分离出核心
-* 内部功能中间件化
-* SESSION/Cookie机制改进
-* 对Swoole以及协程支持改进
-* 对IDE更加友好
-* 统一和精简大量用法
+* RBAC模型权限控制
+* 文件管理 (开发中)
+* 图片上传、压缩、裁剪（开发中)
+* 微信、小程序管理及接入 (开发中)
+* Swoole对接 (计划)
 
 ## 安装
 
 ~~~
-composer create-project topthink/think tp 6.0.*-dev
+composer install
 ~~~
 
-如果需要更新框架使用
-~~~
-composer update topthink/framework
-~~~
+## 框架 ThinkPHP6.0 
 
-## 文档
+<a><img src="https://box.kancloud.cn/2015-12-12_566b6a10506a4.png"></a>
 
 [完全开发手册](https://www.kancloud.cn/manual/thinkphp6_0/content)
 
-## 参与开发
-
-请参阅 [ThinkPHP 核心框架包](https://github.com/top-think/framework)。
-
 ## 版权信息
-
-ThinkPHP遵循Apache2开源协议发布，并提供免费使用。
-
-本项目包含的第三方源码和二进制文件之版权信息另行标注。
-
-版权所有Copyright © 2006-2019 by ThinkPHP (http://thinkphp.cn)
-
-All rights reserved。
-
-ThinkPHP® 商标和著作权所有者为上海顶想信息科技有限公司。
 
 更多细节参阅 [LICENSE.txt](LICENSE.txt)
