@@ -39,7 +39,7 @@ class Auth {
                 $sessionKey = UserAuth::session($id, [
                     'user_id' => $id
                 ], 'web');
-                return success('登陆成功', ['sessionKey' => $sessionKey]);
+                return success('登陆成功', ['sessionKey' => $sessionKey, 'username' => $user['username'], 'nickname' => $user['nickname']]);
             }else{
                 return error('');
             }
