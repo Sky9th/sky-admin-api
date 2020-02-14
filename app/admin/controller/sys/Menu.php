@@ -14,6 +14,28 @@ class Menu extends Resource
     }
 
     /**
+     * 查询菜单以及其下属接口
+     * @return mixed
+     * @throws
+     */
+    public function indexWithApi () {
+        $menus = $this->model->visible(['id','pid','type','title','apis'])->with(['apis' => function ($query) {
+            $query->visible(['id','type','title']);
+        }])->select()->toArray();
+        foreach ($menus as $menu) {
+            if (count($menu['apis']) > 0) {
+                foreach ($menu['apis'] as $api) {
+                    $api['pid'] = $menu['id'];
+                    $api['type'] = 2;
+                    $api['id'] = 'api_'. $api['id'];
+                    $menus[] = $api;
+                }
+            }
+        }
+        return list_to_tree($menus);
+    }
+
+    /**
      * 查询所有菜单
      * @return array
      * @throws
