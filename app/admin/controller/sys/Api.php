@@ -15,6 +15,15 @@ class Api extends Resource
         $this->validate = new \app\common\validate\sys\Api();
     }
 
+    public function index()
+    {
+        $this->getPerPage();
+        $this->makeOrder();
+        $this->makeWhere();
+        $list = $this->model->where($this->where)->where('pid', 0)->append(['children'])->order($this->order)->paginate($this->list_row);
+        return success('', $list);
+    }
+
     /**
      * 根据用户Id查询关联管理组
      * @param int $menu_id 用户Id
@@ -33,10 +42,63 @@ class Api extends Resource
         $this->getPerPage();
         $visible = $this->model->getVisible();
         $visible[] = 'menu_id';
-        $list = Db::table($this->model->getTable())->visible($visible)->alias('a')->join('sys_menu_relation_api b', 'a.id = b.api_id and b.menu_id = '.$menu_id, $relation)->where($this->where)->order($this->order)->paginate($this->list_row);
+        $list = Db::table($this->model->getTable())->where('pid', 0)->visible($visible)->alias('a')->join('sys_menu_relation_api b', 'a.id = b.api_id and b.menu_id = '.$menu_id, $relation)->where($this->where)->order($this->order)->paginate($this->list_row);
         return success('', $list);
     }
 
+    /**
+     *
+     * @return array
+     * @throws
+     */
+    public function save()
+    {
+        $post = input('post.');
+        $type = input('post.type');
+        unset($post['type']);
+        unset($post['update_time']);
+        unset($post['create_time']);
+        $check = $this->validate->scene('save')->check($post);
+        if (!$check) {
+            return error($this->validate->getError());
+        }
+        try {
+            $this->model->startTrans();
+            if ($type == '1'){
+                $pid = $this->model->insert($post, true);
+                $resource = [
+                    ['列表','index','','GET'],
+                    ['新增','save','','POST'],
+                    ['查询','read','/:id','GET'],
+                    ['更新','update','/:id','PUT'],
+                    ['删除','delete','/<id?>','DELETE'],
+                ];
+                $data = [];
+                foreach ($resource as $item) {
+                    $data[] = [
+                        'pid' => $pid,
+                        'title' => $post['title'].$item[0],
+                        'path' => $post['path'].$item[2],
+                        'permission' => $post['permission'].'_'.$item[1],
+                        'method' => $item[3]
+                    ];
+                }
+                $res = $this->model->insertAll($data);
+            } else {
+                $res = $this->model->save($post);
+            }
+            if ($res) {
+                $id = $this->model->id;
+                $this->model->commit();
+                return success(lang($this->msg['save']), ['id' => $id]);
+            } else {
+                $this->model->rollback();
+                return error(lang($this->msg['non_save']));
+            }
+        } catch (\Exception $e){
+            throw $e;
+        }
+    }
 
     /**
      * 获取管理组的相关菜单权限
