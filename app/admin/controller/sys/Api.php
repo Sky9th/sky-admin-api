@@ -21,7 +21,8 @@ class Api extends Resource
      * @throws
      */
     public function indexByMenuId ($menu_id) {
-        $filter = json_decode(input('filter'), true);
+        $filter = json_decode(input('filter', '{}'), true);
+        $relation = input('relation', 'LEFT', '/LEFT|INNER|RIGHT/');
         $alias = [];
         foreach ($filter as $key => $value) {
             $alias['a.'.$key] = $value;
@@ -31,7 +32,7 @@ class Api extends Resource
         $this->getPerPage();
         $visible = $this->model->getVisible();
         $visible[] = 'menu_id';
-        $list = Db::table($this->model->getTable())->visible($visible)->alias('a')->join('sys_menu_relation_api b', 'a.id = b.api_id and b.menu_id = '.$menu_id, 'LEFT')->where($this->where)->order($this->order)->paginate($this->list_row);
+        $list = Db::table($this->model->getTable())->visible($visible)->alias('a')->join('sys_menu_relation_api b', 'a.id = b.api_id and b.menu_id = '.$menu_id, $relation)->where($this->where)->order($this->order)->paginate($this->list_row);
         return success('', $list);
     }
 
