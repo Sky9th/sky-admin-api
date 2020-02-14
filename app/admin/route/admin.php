@@ -26,6 +26,7 @@ Route::group(function () {
 
     Route::resource('menus', 'sys.menu');
     Route::rule('menu/indexByRoleId/:role_id', 'sys.menu/indexByRoleId');
+    Route::rule('menu/indexWithApi', 'sys.menu/indexWithApi');
 
     Route::resource('apis', 'sys.api');
     Route::rule('api/indexByMenuId/:menu_id', 'sys.api/indexByMenuId');
