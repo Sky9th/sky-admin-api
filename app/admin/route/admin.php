@@ -30,6 +30,7 @@ Route::group(function () {
 
     Route::resource('apis', 'sys.api');
     Route::rule('api/indexByMenuId/:menu_id', 'sys.api/indexByMenuId');
+    Route::rule('api/indexByRoleId/:role_id', 'sys.api/indexByRoleId');
     Route::rule('api/modifyMenu', 'sys.api/modifyMenu');
 
     Route::resource('users', 'sys.user');

@@ -3,6 +3,7 @@
 namespace app\admin\controller\sys;
 
 use app\admin\controller\Resource;
+use app\common\model\sys\Role;
 use think\facade\Db;
 
 class Api extends Resource
@@ -35,6 +36,19 @@ class Api extends Resource
         $list = Db::table($this->model->getTable())->visible($visible)->alias('a')->join('sys_menu_relation_api b', 'a.id = b.api_id and b.menu_id = '.$menu_id, $relation)->where($this->where)->order($this->order)->paginate($this->list_row);
         return success('', $list);
     }
+
+
+    /**
+     * 获取管理组的相关菜单权限
+     * @param $role_id
+     * @return array
+     * @throws
+     */
+    public function indexByRoleId ($role_id) {
+        $role = Role::find($role_id);
+        return success('',$role->apis);
+    }
+
 
     /**
      * 移除或添加接口到菜单
