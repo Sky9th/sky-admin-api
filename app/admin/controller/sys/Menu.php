@@ -47,7 +47,7 @@ class Menu extends Resource
     }
 
     /**
-     * 获取管理组的相关权限
+     * 获取管理组的相关菜单权限
      * @param $role_id
      * @return array
      * @throws

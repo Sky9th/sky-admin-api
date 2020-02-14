@@ -47,9 +47,32 @@ class Role extends Resource
         try {
             $this->model->startTrans();
             $role = $this->model->find($role_id);
-            if ($role && $role->menus()->detach() !== false && $role->menus()->attach($permission) !== false ){
-                $this->model->commit();
-                return success('');
+            $apiPermission = [];
+            $menuPermission = [];
+            foreach ($permission as $item) {
+                if( strpos($item, 'api_') !== false ){
+                    $apiPermission[] = str_replace('api_', '', $item);
+                }else{
+                    $menuPermission[] = $item;
+                }
+            }
+            if ($role){
+                $res1 = true;
+                $res2 = true;
+                if (count($menuPermission) > 0){
+                    if($role->menus()->detach() === false || $role->menus()->attach($menuPermission) === false) {
+                        $res1 = false;
+                    }
+                }
+                if (count($apiPermission) > 0) {
+                    if ($role->apis()->detach() === false || $role->apis()->attach($apiPermission) === false) {
+                        $res2 = false;
+                    }
+                }
+                if($res1 && $res2){
+                    $this->model->commit();
+                    return success('');
+                }
             }
             $this->model->rollback();
             return error();
