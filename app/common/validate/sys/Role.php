@@ -31,6 +31,9 @@ class Role extends Validate
      * @return string
      */
     public function lock ($value, $rule, $data=[]){
+        if(!is_array($value)){
+            $value = explode(',', $value);
+        }
         if (in_array(1, $value)) {
             return '超级管理组不允许修改以及删除';
         }
