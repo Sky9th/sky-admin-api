@@ -65,13 +65,14 @@ class Api extends Resource
         try {
             $this->model->startTrans();
             if ($type == '1'){
-                $pid = $this->model->insert($post, true);
+                $this->model->save($post);
+                $pid = $this->model->id;
                 $resource = [
                     ['列表','index','','GET'],
                     ['新增','save','','POST'],
                     ['查询','read','/:id','GET'],
                     ['更新','update','/:id','PUT'],
-                    ['删除','delete','/<id?>','DELETE'],
+                    ['删除','delete','/[:id]','DELETE'],
                 ];
                 $data = [];
                 foreach ($resource as $item) {
@@ -80,10 +81,11 @@ class Api extends Resource
                         'title' => $post['title'].$item[0],
                         'path' => $post['path'].$item[2],
                         'permission' => $post['permission'].'_'.$item[1],
-                        'method' => $item[3]
+                        'method' => $item[3],
                     ];
                 }
-                $res = $this->model->insertAll($data);
+                $this->model = new \app\common\model\sys\Api();
+                $res = $this->model->saveAll($data);
             } else {
                 $res = $this->model->save($post);
             }

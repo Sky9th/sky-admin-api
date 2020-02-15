@@ -11,7 +11,7 @@
 use think\facade\Route;
 
 Route::rest('structure', ['GET', 'structure', 'structure']);
-Route::rest('delete', ['DELETE', '<id?>', 'delete']);
+Route::rest('delete', ['DELETE', '[:id]', 'delete']);
 
 Route::group(function () {
     Route::rule('login', 'sys.auth/login');
