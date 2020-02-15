@@ -20,4 +20,8 @@ class Api extends Sys {
         return strtoupper($value);
     }
 
+    public function setPermissionAttr ($value) {
+        return 'i_'.$value;
+    }
+
 }

@@ -44,4 +44,8 @@ class Role extends Sys
         }
         return true;
     }
+
+    public function setPermissionAttr ($value) {
+        return 'r_'.$value;
+    }
 }

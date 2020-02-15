@@ -13,4 +13,8 @@ class Menu extends Sys {
         return $this->belongsToMany('Api','sys_menu_relation_api','api_id','menu_id');
     }
 
+    public function setPermissionAttr ($value) {
+        return 'p_'.$value;
+    }
+
 }
