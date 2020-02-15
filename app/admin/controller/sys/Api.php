@@ -25,7 +25,7 @@ class Api extends Resource
     }
 
     /**
-     * 根据用户Id查询关联管理组
+     * 根据用户Id查询关联接口
      * @param int $menu_id 用户Id
      * @return array
      * @throws
@@ -111,7 +111,6 @@ class Api extends Resource
         return success('',$role->apis);
     }
 
-
     /**
      * 移除或添加接口到菜单
      * @return array
@@ -121,11 +120,16 @@ class Api extends Resource
         $menu_id = input('post.menu_id');
         $api_id = input('post.api_id');
         $action =  input('post.action');
-        $api = $this->model->find($api_id);
+        $api = $this->model->where(true)->append(['children'])->find($api_id)->toArray();
+        $api_ids = [$api_id];
+        if (count($api['children']) > 0) {
+            $api_ids = array_merge($api_ids,array_column($api['children']->toArray(),'id'));
+        }
+        $menu = \app\common\model\sys\Menu::find($menu_id);
         if ($action == 1) {
-            $res = $api->menus()->attach($menu_id);
+            $res = $menu->apis()->saveAll($api_ids);
         } else {
-            $res = $api->menus()->detach($menu_id);
+            $res = $menu->apis()->detach($api_ids);
         }
         return $res ? success() : error();
     }

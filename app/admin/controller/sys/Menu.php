@@ -20,12 +20,16 @@ class Menu extends Resource
      */
     public function indexWithApi () {
         $menus = $this->model->visible(['id','pid','type','title','apis'])->with(['apis' => function ($query) {
-            $query->visible(['id','type','title']);
+            $query->visible(['id','pid','type','title']);
         }])->select()->toArray();
         foreach ($menus as $menu) {
             if (count($menu['apis']) > 0) {
                 foreach ($menu['apis'] as $api) {
-                    $api['pid'] = $menu['id'];
+                    if($api['pid'] == 0){
+                        $api['pid'] = $menu['id'];
+                    }else{
+                        $api['pid'] = 'api_' . $api['pid'];
+                    }
                     $api['type'] = 2;
                     $api['id'] = 'api_'. $api['id'];
                     $menus[] = $api;
