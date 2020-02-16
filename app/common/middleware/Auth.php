@@ -1,6 +1,7 @@
 <?php
 namespace app\common\middleware;
 
+use app\admin\logic\AdminAuth;
 use app\common\logic\UserAuth;
 
 class Auth {
@@ -16,9 +17,14 @@ class Auth {
             }else{
                 return json(error('登录凭证已失效', [], 0), 401);
             }
+
+            $user_id = $session['user_id'];
+            $adminAuth = new AdminAuth($user_id);
+            if (!$adminAuth->hasPermission()) {
+                return json(error('您无相关权限', [], 0), 403);
+            }
         }
         return $next($request);
     }
-
 
 }
