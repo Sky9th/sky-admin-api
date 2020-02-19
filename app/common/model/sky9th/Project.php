@@ -13,6 +13,7 @@ class Project extends Client {
     public $form = [
         'title' => 'input',
         'link' => 'input',
+        'cover' => ['type'=>'image', 'width'=>'200', 'height'=>'200'],
         'description' => 'textarea',
         'content' => 'editor'
     ];
