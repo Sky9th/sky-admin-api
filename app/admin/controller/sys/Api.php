@@ -65,6 +65,7 @@ class Api extends Resource
         try {
             $this->model->startTrans();
             if ($type == '1'){
+                $post['resource'] = 1;
                 $this->model->save($post);
                 $pid = $this->model->id;
                 $resource = [

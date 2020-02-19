@@ -13,7 +13,7 @@ class Api extends Sys {
     }
 
     public function getChildrenAttr ($value, $data) {
-        return $data['id'] ?  $this->where('pid', $data['id'])->select() : [];
+        return $data['id'] && $data['resource'] == 1 ?  $this->where('pid', $data['id'])->select() : [];
     }
 
     public function setMethodAttr ($value) {
