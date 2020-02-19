@@ -15,11 +15,17 @@ Route::rest('delete', ['DELETE', '[:id]', 'delete']);
 
 Route::group(function () {
     Route::rule('verifyImg/:name','common.verify/image');
+    Route::rule('getFile/:id','index/getFile');
     Route::rule('login', 'sys.auth/login');
 });
 
 // 需要经过登录验证的接口，通过Auth中间件做登录鉴权
 Route::group(function () {
+
+    /** 系统接口 >>>> */
+    Route::rule('upload','sys.upload/general');
+
+    /** RBAC相关接口 >>>> */
     Route::resource('roles', 'sys.role');
     Route::rule('role/savePermission', 'sys.role/savePermission');
     Route::rule('role/modifyUser', 'sys.role/modifyUser');
@@ -39,6 +45,8 @@ Route::group(function () {
     Route::rule('user/indexByRoleId/:role_id', 'sys.user/indexByRoleId');
 
     Route::resource('routes', 'sys.route');
+    /** <<<< RBAC相关接口 */
+    /** <<<< 系统接口 */
 
     Route::resource('projects', 'sky9th.project');
     Route::resource('techs', 'sky9th.tech');

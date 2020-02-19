@@ -151,3 +151,13 @@ function filter_xss($string) {
 function captcha_check($name, $value) {
     return strtolower($value) == strtolower(cache('skyadmin_captcha_' . $name));
 }
+
+/**
+ * 获取文件路径
+ * @param $id
+ * @return array|\think\Model|null
+ */
+function get_file_src($id) {
+    $file = new \app\common\logic\File();
+    return $file->getFile($id);
+}
