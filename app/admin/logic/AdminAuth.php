@@ -97,6 +97,7 @@ class AdminAuth {
             $route = request()->rule()->getRule();
             $while_list = [
                 'login',
+                'upload',
                 'user/getPermissionInfo'
             ];
             if (in_array($route, $while_list)) {
