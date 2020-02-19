@@ -8,6 +8,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\logic\AdminAuth;
 use app\common\model\Common as CommonModel;
 use app\common\validate\Common as CommonValidate;
 
