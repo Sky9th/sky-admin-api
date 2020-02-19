@@ -39,6 +39,18 @@ class Resource
         'non_status' => 'status error',
     ];
 
+    /**
+     * 数据结构
+     * @return array [
+         * @field 该数据模型的可公开字段
+         * @search 该数据模型的可搜索字段
+         * @thead 表头字段
+         * @form 自定义表单 array [
+             * @type string 表单类型 required
+             * ... 表单参数 [例：上传图片时可定义长宽]
+         * ]
+     * ]
+     */
     public function structure () {
         $rules = $this->validate->getRule();
         $fields = [];
@@ -49,6 +61,11 @@ class Resource
         $search = $this->model->search;
         $thead = $this->model->thead;
         $form = $this->model->form;
+        foreach ($form as $key => $item) {
+            if (is_string($item)) {
+                $form[$key] = [ 'type' => $item ];
+            }
+        }
         return success('', ['field' => $fields, 'search' => $search, 'thead' => $thead, 'form' => $form]);
     }
 
