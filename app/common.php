@@ -141,3 +141,13 @@ function filter_xss($string) {
     }
     return $string;
 }
+
+/**
+ * 验证码确认
+ * @param $name
+ * @param $value
+ * @return bool
+ */
+function captcha_check($name, $value) {
+    return strtolower($value) == strtolower(cache('skyadmin_captcha_' . $name));
+}

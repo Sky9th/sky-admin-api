@@ -14,6 +14,7 @@ Route::rest('structure', ['GET', 'structure', 'structure']);
 Route::rest('delete', ['DELETE', '[:id]', 'delete']);
 
 Route::group(function () {
+    Route::rule('verifyImg/:name','common.verify/image');
     Route::rule('login', 'sys.auth/login');
 });
 
@@ -38,7 +39,6 @@ Route::group(function () {
     Route::rule('user/indexByRoleId/:role_id', 'sys.user/indexByRoleId');
 
     Route::resource('routes', 'sys.route');
-
 
     Route::resource('projects', 'sky9th.project');
     Route::resource('techs', 'sky9th.tech');
