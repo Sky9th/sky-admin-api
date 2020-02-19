@@ -12,7 +12,5 @@ use app\common\model\Common;
 
 class File extends Common
 {
-
     protected $table = 'common_file';
-
 }

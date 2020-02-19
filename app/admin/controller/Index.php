@@ -1,18 +1,19 @@
 <?php
 
-namespace app\app\controller;
+namespace app\admin\controller;
 
 class Index
 {
 
     /**
-     * 接口
+     * 获取文件路径
+     * @param int $id
      * @return array
      * @throws
      */
-    public function getBrand()
+    public function getFile($id)
     {
-        return success('', []);
+        return success('',get_file_src($id));
     }
 
 }

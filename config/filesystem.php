@@ -23,4 +23,11 @@ return [
         ],
         // 更多的磁盘配置信息
     ],
+    'validate' => [
+        'image' => [
+            'filesize'=>'2097152',
+            'fileExt'=>'jpg,png,jpeg',
+            'fileMime' => 'image/jpeg,image/png,image/gif',
+        ]
+    ]
 ];
