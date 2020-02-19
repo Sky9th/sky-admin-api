@@ -27,7 +27,7 @@ class AdminAuth {
         $this->user_id = $user_id;
         $this->user = User::where('id', $user_id)->find();
         if(!$this->user){
-            return error('');
+            return error();
         }
     }
 
@@ -103,15 +103,17 @@ class AdminAuth {
                 return true;
             } else{
                 list($roles, $menus, $apis, $permissions) = $this->getPermissionAndMenuAndApi();
-                $api_path = array_column($apis->toArray(), 'path');
-                $expected = [];
+                $api_path = [];
                 //自适应两种路由规则
-                foreach ($api_path as $item) {
-                    $_tmp = preg_replace('/\/:(.*)\/?/', '/<$1>', $item);
+                foreach ($apis as $item) {
+                    $_tmp = preg_replace('/\/:(.*)\/?/', '/<$1>', $item['path']);
                     $_tmp = preg_replace('/\/\[:(.*)]\/?/', '/<$1?>', $_tmp);
-                    $expected[] = $_tmp;
+                    if ($item['resource'] == 1) {
+                        $api_path[] = $item['path'].'/structure';
+                    }
+                    $api_path[] = $item['path'];
+                    $api_path[] = $_tmp;
                 }
-                $api_path = array_merge($expected, $api_path);
                 return in_array($route, $api_path);
             }
         }
