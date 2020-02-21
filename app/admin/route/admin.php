@@ -15,7 +15,7 @@ Route::rest('delete', ['DELETE', '[:id]', 'delete']);
 
 Route::group(function () {
     Route::rule('verifyImg/:name','common.verify/image');
-    Route::rule('getFile/:id','index/getFile');
+    Route::rule('getFile/[:id]','index/getFile');
     Route::rule('login', 'sys.auth/login');
 });
 

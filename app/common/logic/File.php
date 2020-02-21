@@ -14,7 +14,7 @@ class File
 
     public function __construct($access = 'public')
     {
-        $this->user_id = request()->user_id;
+        $this->user_id = request()->user_id ? : 0;
         $this->access = $access;
         $this->pid = input('pid', 0);
     }
@@ -26,12 +26,32 @@ class File
      * @throws
      */
     public function getFile($id) {
-        $file = FileModel::where('id', $id)->where('local', 0)->find();
-        return [
-            'id' => $id,
-            'title' => $file['title'],
-            'src' =>request()->domain(). '/storage/'.$file['src']
-        ];
+        if (!is_array($id)) {
+            $ids = explode(',', $id);
+        } else{
+            $ids = $id;
+        }
+        $files = FileModel::where('id', 'in', $ids)->where('local', 0)->select();
+        if (count($files) == 1) {
+            $file = $files[0];
+            return [
+                'id' => $id,
+                'title' => $file['title'],
+                'src' =>request()->domain(). '/storage/'.$file['src'],
+                'path' => $file['src'],
+            ];;
+        }else{
+            $res = [];
+            foreach ($files as $file) {
+                $res[] = [
+                    'id' => $id,
+                    'title' => $file['title'],
+                    'src' =>request()->domain(). '/storage/'.$file['src'],
+                    'path' => $file['src'],
+                ];
+            }
+            return $res;
+        }
     }
 
     /**

@@ -14,8 +14,13 @@ class Project extends Client {
         'title' => 'input',
         'link' => 'input',
         'cover' => ['type'=>'image', 'width'=>'200', 'height'=>'200'],
+        'pictures' => 'images',
         'description' => 'textarea',
         'content' => 'editor'
     ];
+
+    public function setPicturesAttr($value){
+        return implode(',', $value);
+    }
 
 }

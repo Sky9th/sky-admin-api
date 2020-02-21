@@ -153,11 +153,11 @@ function captcha_check($name, $value) {
 }
 
 /**
- * 获取文件路径
+ * 获取文件信息
  * @param $id
  * @return array|\think\Model|null
  */
-function get_file_src($id) {
+function get_file($id) {
     $file = new \app\common\logic\File();
     return $file->getFile($id);
 }
