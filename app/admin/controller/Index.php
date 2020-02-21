@@ -11,9 +11,10 @@ class Index
      * @return array
      * @throws
      */
-    public function getFile($id)
+    public function getFile($id = false)
     {
-        return success('',get_file_src($id));
+        if (!$id) $id = input('post.ids');
+        return success('', get_file($id));
     }
 
 }
