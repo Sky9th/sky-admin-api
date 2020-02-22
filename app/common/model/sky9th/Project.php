@@ -15,11 +15,17 @@ class Project extends Client {
         'link' => 'input',
         'cover' => ['type'=>'image', 'width'=>'200', 'height'=>'200'],
         'pictures' => 'images',
+        'attach' => 'file',
+        'attachs' => 'files',
         'description' => 'textarea',
         'content' => 'editor'
     ];
 
     public function setPicturesAttr($value){
+        return implode(',', $value);
+    }
+
+    public function setAttachsAttr($value){
         return implode(',', $value);
     }
 

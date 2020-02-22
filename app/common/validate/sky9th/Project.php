@@ -10,6 +10,8 @@ class Project extends Common {
         'link|链接' => 'length:0,255',
         'cover|封面' => 'integer',
         'pictures|图集' => 'length:0,255',
+        'attach|附件' => 'integer',
+        'attachs|附件' => 'length:0,255',
         'description|简介' => 'length:0,255',
         'content|内容' => 'min:10',
     ];
