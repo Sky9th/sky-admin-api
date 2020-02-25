@@ -83,7 +83,7 @@ class File
         $hash = $file->hash('sha1');
         $size = $file->getSize();
         $res = FileModel::where('hash', $hash)->where('size', $size)->where('user_id', $this->user_id)->find();
-        return $res ? $res['id'] : false;
+        return $res && is_file('./storage/'.$res['src']) ? $res['id'] : false;
     }
 
     /**

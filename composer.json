@@ -23,7 +23,9 @@
     "ext-openssl": "*",
     "ext-json": "*",
     "gregwar/captcha": "^1.1",
-    "ext-gd": "*"
+    "ext-gd": "*",
+    "ext-curl": "*",
+    "ext-imagick": "*"
   },
   "require-dev": {
     "symfony/var-dumper": "^4.2",

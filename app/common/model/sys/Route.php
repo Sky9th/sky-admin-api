@@ -12,5 +12,8 @@ class Route extends Sys {
     public function getMetaAttr ($value, $data) {
         return ['title'=>$data['title'], 'cache'=>boolval($data['cache'])];
     }
-
+    
+    public function setPermissionAttr ($value) {
+        return 'p_'.$value;
+    }
 }

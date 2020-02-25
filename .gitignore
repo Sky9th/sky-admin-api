@@ -5,3 +5,6 @@
 .env
 /composer.lock
 /app/eft/
+/app/admin/controller/eft/
+/app/common/model/eft/
+/app/common/validate/eft/

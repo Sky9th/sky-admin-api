@@ -16,7 +16,7 @@ class Api extends Validate
     protected $rule = [
         'title|名称' => 'require',
         'path|路径' => 'require|combineUnique',
-        'method|方法' => 'require'
+        'method|方法' => 'requireIf:type,1'
     ];
 
     protected $scene = [
@@ -26,7 +26,7 @@ class Api extends Validate
     // 路径与方法组合唯一
     protected function combineUnique($value, $rule, $data=[])
     {
-        $res = \app\common\model\sys\Api::where('path', $data['path'])->where('path', $data['method'])->count();
+        $res = \app\common\model\sys\Api::where('path', $data['path'])->where('path', isset($data['method']) ? $data['method'] : '')->count();
         if($res > 0){
             return '路径与方法的组合必须唯一';
         }
