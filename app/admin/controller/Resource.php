@@ -60,13 +60,21 @@ class Resource
         }
         $search = $this->model->search;
         $thead = $this->model->thead;
+        $formatThead = [];
+        foreach ($thead as $key => $item) {
+            if (is_string($item)) {
+                $formatThead[$item] = [ 'type' => 'text' ];
+            } else {
+                $formatThead[$key] = $item;
+            }
+        }
         $form = $this->model->form;
         foreach ($form as $key => $item) {
             if (is_string($item)) {
                 $form[$key] = [ 'type' => $item ];
             }
         }
-        return success('', ['field' => $fields, 'search' => $search, 'thead' => $thead, 'form' => $form]);
+        return success('', ['field' => $fields, 'search' => $search, 'thead' => $formatThead, 'form' => $form]);
     }
 
     /**

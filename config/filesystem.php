@@ -25,7 +25,7 @@ return [
     ],
     'validate' => [
         'image' => [
-            'filesize'=>'2097152',
+            'filesize'=>'5097152',
             'fileExt'=>'jpg,png,jpeg',
             'fileMime' => 'image/jpeg,image/png,image/gif',
         ]
