@@ -25,11 +25,11 @@ return [
             // 服务器地址
             'hostname' => Env::get('database.hostname', '127.0.0.1'),
             // 数据库名
-            'database' => Env::get('database.database', 'sky_admin_sky9th'),
+            'database' => Env::get('database.database', ''),
             // 用户名
-            'username' => Env::get('database.username', 'sky_admin_sky9th'),
+            'username' => Env::get('database.username', ''),
             // 密码
-            'password' => Env::get('database.password', 'HZze6SPd7m7RJGNz'),
+            'password' => Env::get('database.password', ''),
             // 端口
             'hostport' => Env::get('database.hostport', '3306'),
             // 数据库连接参数

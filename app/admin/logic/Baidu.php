@@ -1,25 +1,27 @@
 <?php
 namespace app\admin\logic;
 
+use think\Exception;
+
 class Baidu {
 
     /**
      * 百度开放平台AccessToken获取
      * @return mixed
+     * @throws Exception
      */
     public static function accessToken () {
         $token = cache('BAIDU_AI_ACCESS_TOKEN');
-        if(!$token) {
+        if($token) {
             $url = 'https://aip.baidubce.com/oauth/2.0/token';
             $post_data['grant_type'] = 'client_credentials';
-            $post_data['client_id'] = '9t21jBLGgOZOw8MBDX48ZzEq';
-            $post_data['client_secret'] = '1FRKLuOcylQLuQLVv2DZF8Cjl7zPBdbc';
+            $post_data['client_id'] = config('baidu.client_id');
+            $post_data['client_secret'] = config('baidu.client_secret');
             $o = "";
             foreach ($post_data as $k => $v) {
                 $o .= "$k=" . urlencode($v) . "&";
             }
             $post_data = substr($o, 0, -1);
-
             $res = request_post($url, $post_data);
 
             /**
@@ -33,7 +35,12 @@ class Baidu {
              * }
              */
 
-            cache('BAIDU_AI_ACCESS_TOKEN', json_decode($res, true), 3600 * 24);
+            $res = json_decode($res, true);
+            if (isset($res['error'])) {
+                throw new Exception($res['error_description']);
+            }
+
+            cache('BAIDU_AI_ACCESS_TOKEN',  $res,3600 * 24);
             $token = cache('BAIDU_AI_ACCESS_TOKEN');
         }
         return $token['access_token'];
