@@ -12,7 +12,7 @@ class Baidu {
      */
     public static function accessToken () {
         $token = cache('BAIDU_AI_ACCESS_TOKEN');
-        if($token) {
+        if(!$token) {
             $url = 'https://aip.baidubce.com/oauth/2.0/token';
             $post_data['grant_type'] = 'client_credentials';
             $post_data['client_id'] = config('baidu.client_id');
@@ -37,7 +37,7 @@ class Baidu {
 
             $res = json_decode($res, true);
             if (isset($res['error'])) {
-                throw new Exception($res['error_description']);
+                throw new Exception($res['error_msg']);
             }
 
             cache('BAIDU_AI_ACCESS_TOKEN',  $res,3600 * 24);
