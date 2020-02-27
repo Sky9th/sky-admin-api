@@ -2,7 +2,6 @@
 
 // 配置RSA的公钥和秘钥
 return [
-
     'public' => '-----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCAUlVSmPZnhNFJgBzWIzfTt4bJ
 y1EZC7JLumn/1raTNTHwbC3vUzT6JRUbXJ8rTtfFI3ul/848HJPQlCbp37EcawrE
