@@ -17,7 +17,7 @@ class User extends Common
     protected $table = 'common_user';
     protected $resultSetType = 'collection';
     protected $readonly = ['username'];
-    protected $visible = ['id','type','nickname','realname','phone','mial','username','last_login_time','status'];
+    protected $visible = ['id','type','nickname','realname','phone','mail','username','last_login_time','status'];
     protected $type = [
         'last_login' => 'timestamp',
     ];
