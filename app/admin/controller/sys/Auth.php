@@ -21,7 +21,7 @@ class Auth {
         $code = input('post.code');
         if (captcha_check($username, $code)) {
             $model = new User();
-            $user = $model->where('username', $username)->where('type', 0)->find();
+            $user = $model->where('username', $username)->where('type', 1)->find();
             if( !$user ){
                 return error('账号未注册');
             }

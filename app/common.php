@@ -149,6 +149,9 @@ function filter_xss($string) {
  * @return bool
  */
 function captcha_check($name, $value) {
+    if (!$name) {
+        $name = input('fingerprint');
+    }
     return strtolower($value) == strtolower(cache('skyadmin_captcha_' . $name));
 }
 

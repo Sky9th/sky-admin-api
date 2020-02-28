@@ -21,16 +21,17 @@ class UserAuth
     /**
      * 注册登录状态
      * @param $user_id
-     * @param $data
+     * @param $data array 状态数据
      * @param $prefix
+     * @param $expire int 过期时间
      * @return string
      */
-    static public function session($user_id, $data, $prefix = '')
+    static public function session($user_id, $data, $prefix = '', $expire = 86400)
     {
         $session = time() . uniqid() . $user_id;
         $data['expire_time'] = time();
         $sessionKey = $prefix . $session;
-        cache($sessionKey, $data, 3600 * 24);
+        cache($sessionKey, $data, $expire);
         UserModel::update(['last_login_time' => time(), 'last_login_session' => $sessionKey], ['id' => $user_id]);
         return $sessionKey;
     }
