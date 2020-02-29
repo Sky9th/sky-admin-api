@@ -16,8 +16,6 @@ use think\facade\Request;
 class UserAuth
 {
 
-    protected static $session_time = 60 * 60;
-
     /**
      * 注册登录状态
      * @param $user_id
@@ -29,7 +27,8 @@ class UserAuth
     static public function session($user_id, $data, $prefix = '', $expire = 86400)
     {
         $session = time() . uniqid() . $user_id;
-        $data['expire_time'] = time();
+        $data['expire_time'] = time() + $expire;
+        $data['expire'] = $expire;
         $sessionKey = $prefix . $session;
         cache($sessionKey, $data, $expire);
         UserModel::update(['last_login_time' => time(), 'last_login_session' => $sessionKey], ['id' => $user_id]);
@@ -53,11 +52,11 @@ class UserAuth
         }
         $expire_time = $session['expire_time'];
         $now = time();
-        if (abs($expire_time - $now) > self::$session_time) {
+        if ($expire_time - $now <0) {
             return false;
         } else {
-            $session['expire_time'] = $now;
-            cache($sessionKey, $session, 3600 * 24);
+            $session['expire_time'] = $now +  $session['expire'];
+            cache($sessionKey, $session, $session['expire']);
             return $session;
         }
     }

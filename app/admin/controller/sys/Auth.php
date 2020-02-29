@@ -19,7 +19,7 @@ class Auth {
         $username = input('post.username');
         $password = input('post.password');;
         $code = input('post.code');
-        if (captcha_check($username, $code)) {
+        if (captcha_check('', $code)) {
             $model = new User();
             $user = $model->where('username', $username)->where('type', 1)->find();
             if( !$user ){
