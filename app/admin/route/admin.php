@@ -45,6 +45,9 @@ Route::group(function () {
     Route::rule('user/indexByRoleId/:role_id', 'sys.user/indexByRoleId');
 
     Route::resource('routes', 'sys.route');
+
+    Route::resource('configs', 'sys.config');
+    Route::rule('config/set/:code', 'sys.config/set');
     /** <<<< RBAC相关接口 */
     /** <<<< 系统接口 */
 

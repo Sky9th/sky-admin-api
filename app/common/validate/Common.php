@@ -9,4 +9,8 @@ class Common extends Validate {
         return $this->rule;
     }
 
+    public function pass () {
+        return true;
+    }
+
 }
