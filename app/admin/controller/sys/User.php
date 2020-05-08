@@ -19,6 +19,16 @@ class User extends Resource {
         $this->validate = new \app\common\validate\sys\User();
     }
 
+    public function index()
+    {
+        $this->getPerPage();
+        $this->makeOrder();
+        $this->makeWhere();
+        $this->where[] = ['type', '=', 1];
+        $list = $this->model->where($this->where)->order($this->order)->paginate($this->list_row);
+        return success('', $list);
+    }
+
     /**
      * 根据管理组Id查询关联用户
      * @param int $role_id 管理组Id
@@ -36,6 +46,7 @@ class User extends Resource {
         $this->getPerPage();
         $visible = $this->model->getVisible();
         $visible[] = 'role_id';
+        $this->where[] = ['a.type','=', 1];
         $list = Db::table($this->model->getTable())->visible($visible)->alias('a')->join('sys_user_relation_role b', 'a.id = b.user_id and b.role_id = '.$role_id, 'LEFT')->where($this->where)->order($this->order)->paginate($this->list_row);
         return success('',$list);
     }
