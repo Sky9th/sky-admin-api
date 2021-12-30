@@ -25,7 +25,7 @@ function success($msg = '', $data = '')
  * @param mixed $data
  * @param string $url
  * @param int $code
- * @return array
+ * @return \think\response\Json
  */
 function error($msg = false, $data = [], $code = -1)
 {
@@ -37,7 +37,7 @@ function error($msg = false, $data = [], $code = -1)
         'msg' => $msg,
         'data' => $data
     ];
-    return $result;
+    return json($result, 400);
 }
 
 /**
