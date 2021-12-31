@@ -30,7 +30,7 @@ class UserAuth
         $data['expire_time'] = time() + $expire;
         $data['expire'] = $expire;
         $sessionKey = $prefix . $session;
-        cache($sessionKey, $data, $expire);
+        cache($sessionKey, $data);
         UserModel::update(['last_login_time' => time(), 'last_login_session' => $sessionKey], ['id' => $user_id]);
         return $sessionKey;
     }

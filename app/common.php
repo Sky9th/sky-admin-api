@@ -11,12 +11,11 @@
  */
 function success($msg = '', $data = '')
 {
-    $result = [
+    return [
         'code' => 0,
         'msg' => $msg,
         'data' => $data
-    ];
-    return $result;
+    ];;
 }
 
 /**

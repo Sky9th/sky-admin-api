@@ -2,8 +2,6 @@
 
 namespace app\user\controller;
 
-use app\common\model\eft\Advise;
-
 class User
 {
     protected $user_id ;

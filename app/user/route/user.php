@@ -12,5 +12,5 @@ Route::group(function () {
 });
 
 Route::group(function () {
-    Route::rule('userInfo','user/userInfo');
+    Route::rule('info','user/userInfo');
 })->middleware(\app\common\middleware\Auth::class);;
