@@ -15,7 +15,7 @@ function success($msg = '', $data = '')
         'code' => 0,
         'msg' => $msg,
         'data' => $data
-    ];;
+    ];
 }
 
 /**
@@ -24,19 +24,18 @@ function success($msg = '', $data = '')
  * @param mixed $data
  * @param string $url
  * @param int $code
- * @return \think\response\Json
+ * @return array
  */
 function error($msg = false, $data = [], $code = -1)
 {
     if (!$msg) {
         $msg = '系统繁忙，请稍后再试';
     }
-    $result = [
+    return [
         'code' => $code,
         'msg' => $msg,
         'data' => $data
     ];
-    return json($result, 400);
 }
 
 /**
@@ -54,7 +53,7 @@ function get_image($id, $url = false)
     } else if (is_string($id)) {
         $image_ids = explode(',', $id);
     }
-    $images = \app\common\model\Files::where('id', 'in', $image_ids)->select();
+    $images = \app\common\model\common\File::where('id', 'in', $image_ids)->select();
     if (count($images) == 0) {
         return false;
     }

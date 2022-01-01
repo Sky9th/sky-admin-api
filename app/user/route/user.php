@@ -13,4 +13,5 @@ Route::group(function () {
 
 Route::group(function () {
     Route::rule('info','user/userInfo');
+    Route::rule('setNickname','user/setNickname');
 })->middleware(\app\common\middleware\Auth::class);;

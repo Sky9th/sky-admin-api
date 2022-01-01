@@ -3,6 +3,8 @@
 namespace app\chat\controller;
 
 use app\common\model\sky9th\Chat;
+use app\common\model\sky9th\ChatTag;
+use app\common\model\sky9th\ChatUser;
 
 class Index
 {
@@ -29,19 +31,45 @@ class Index
     }
 
     /**
-     * 发送信息
+     * 发送信息接口
      * @return array
+     * @throws
      */
     public function msg () {
         $post = input('post.');
         $chat = new Chat();
-        $chat->save([
+        $res = $chat->save([
             'user_id' => $this->user_id,
             'content' => $post['content'],
-            'type' => $post['type']
+            'tag' => $post['tag']
         ]);
         $id = $chat->getLastInsID();
+        if ($res) {
+            @\app\chat\logic\Index::afterMsg($this->user_id, $post['tag']);
+        }
         return success('', $id);
+    }
+
+    /**
+     * 人群接口
+     * @return array
+     * @throws
+     */
+    public function people () {
+        $chat = new ChatUser();
+        $list = $chat->paginate(15);
+        return success('', $list);
+    }
+
+    /**
+     * 人群接口
+     * @return array
+     * @throws
+     */
+    public function Tag () {
+        $chat = new ChatTag();
+        $list = $chat->where('status', 1)->select();
+        return success('', $list);
     }
 
 }

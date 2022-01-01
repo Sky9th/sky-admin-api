@@ -2,6 +2,8 @@
 
 namespace app\user\controller;
 
+use \app\common\model\common\User as UserModel;
+
 class User
 {
     protected $user_id ;
@@ -17,8 +19,19 @@ class User
      * @throws
      */
     public function userInfo () {
-        $user = \app\common\model\common\User::where('id', $this->user_id)->find();
+        $user = UserModel::where('id', $this->user_id)->find();
         return $user ? success('', $user) : error();
+    }
+
+    /**
+     * 设置昵称
+     * @return array|\think\response\Json
+     */
+    public function setNickName () {
+        $post = input('post.');
+        $user = UserModel::where('id', $this->user_id)->find();
+        $user->nickname = $post['nickname'];
+        return $user->save() ? success() : error();
     }
 
 }
