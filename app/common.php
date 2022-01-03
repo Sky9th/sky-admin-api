@@ -1,6 +1,7 @@
 <?php
 // 应用公共文件
-
+define('SUPER_ADMIN_ID', 1);  //超级管理员ID,默认具备所有权限
+define('SUPER_ROLE_ID', 1);  //超级管理组ID,默认具备所有权限
 
 /**
  * 返回正确状态的数组

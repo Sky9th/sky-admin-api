@@ -1,8 +1,5 @@
 <?php
 
-define('SUPER_ADMIN_ID', 1);  //超级管理员ID,默认具备所有权限
-define('SUPER_ROLE_ID', 1);  //超级管理组ID,默认具备所有权限
-
 return [
     //秘钥
     'api_key' => env('encrypt.api_key',''),//秘钥：RSA加密解密配对
