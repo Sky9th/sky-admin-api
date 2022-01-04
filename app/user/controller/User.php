@@ -2,6 +2,7 @@
 
 namespace app\user\controller;
 
+use app\common\logic\UserAuth;
 use \app\common\model\common\User as UserModel;
 
 class User
@@ -19,7 +20,7 @@ class User
      * @throws
      */
     public function userInfo () {
-        $user = UserModel::where('id', $this->user_id)->find();
+        $user = UserAuth::info($this->user_id);
         return $user ? success('', $user) : error();
     }
 

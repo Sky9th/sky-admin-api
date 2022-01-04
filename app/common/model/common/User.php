@@ -26,6 +26,19 @@ class User extends Common
         return $this->belongsToMany('app\common\model\sys\Role', 'sys_user_relation_role', 'role_id','user_id');
     }
 
+    public function mpr() {
+        return $this->belongsTo('app\common\model\common\MprUser','mpr_user_id');
+    }
+
+    public function wechat() {
+        return $this->belongsTo('app\common\model\common\WechatUser','wechat_user_id');
+    }
+
+    public function getMailAttr($value) {
+        // TODO mask mail
+        return $value;
+    }
+
     public function setPasswordAttr ($value, $data) {
         $seed =  rand(1000, 9999);
         $this->set('seed', $seed);

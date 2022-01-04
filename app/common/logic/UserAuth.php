@@ -10,8 +10,8 @@ namespace app\common\logic;
 
 use app\common\model\common\User as UserModel;
 use think\Db;
-use think\Exception;
 use think\facade\Request;
+use think\Model;
 
 class UserAuth
 {
@@ -85,27 +85,27 @@ class UserAuth
     static public function register($wechat_user_id, $mpr_user_id)
     {
         $exist = false;
+        $user = new UserModel();
+        $db = new Db();
         if ($wechat_user_id) {
-            $exist = UserModel::where('wechat_user_id', $wechat_user_id)->where('status', 1)->where('type', 2)->value('id');
+            $exist = $user->where('wechat_user_id', $wechat_user_id)->where('status', 1)->where('type', 2)->value('id');
         }
         if (!$exist && $mpr_user_id) {
-            $exist = UserModel::where('mpr_user_id', $mpr_user_id)->where('status', 1)->where('type', 2)->value('id');
+            $exist = $user->where('mpr_user_id', $mpr_user_id)->where('status', 1)->where('type', 2)->value('id');
         }
 
         if ($exist) {
             return $exist;
         } else {
-            Db::startTrans();
+            $db->startTrans();
             try {
-
                 $model = new UserModel();
                 $model->save(['type' => 2, 'wechat_user_id' => $wechat_user_id, 'mpr_user_id' => $mpr_user_id]);
                 $user_id = $model->id;
-
-                Db::commit();
+                $db->commit();
                 return $user_id;
-            } catch (Exception $e) {
-                Db::rollback();
+            } catch (\Exception $e) {
+                $db->rollback();
                 throw $e;
             }
         }
@@ -118,37 +118,38 @@ class UserAuth
      * @param $wechat_user_id
      * @param $mpr_user_id
      * @return array|mixed
-     * @throws Exception
-     * @throws
+     * @throws \Exception
      */
     static public function phone($phone, $user_id, $wechat_user_id, $mpr_user_id)
     {
-        $exist = UserModel::where('phone', $phone)->where('type', 2)->field('id,type,mpr_user_id,wechat_user_id,nickname,realname,phone,mail')->find();
-        Db::startTrans();
+        $db = new Db();
+        $user = new UserModel();
+        $exist = $user->where('phone', $phone)->where('type', 2)->field('id,type,mpr_user_id,wechat_user_id,nickname,realname,phone,mail')->find();
+        $db->startTrans();
         try {
             $user = new UserModel();
             $data = [];
             $wechat_user_id ? $data['wechat_user_id'] = $wechat_user_id : [];
             $mpr_user_id ? $data['mpr_user_id'] = $mpr_user_id : [];
             if ($exist) {
-                $res = $user->save($data, ['id' => $exist['id']]);
+                $res = $user->where(['id' => $exist['id']])->save($data);
                 $user_id = $exist['id'];
             } else {
                 $data['phone'] = $phone;
-                $res = $user->save($data, ['id' => $user_id]);
+                $res = $user->where(['id' => $user_id])->save($data);
             }
             $sessionKey = Request::instance()->header()['sessionkey'];
             $session = cache($sessionKey);
             $session['user_id'] = $user_id;
             cache($sessionKey, $session);
             if (!$res) {
-                Db::rollback();
+                $db->rollback();
                 return error();
             }
-            Db::commit();
+            $db->commit();
             return $user_id;
-        } catch (Exception $e) {
-            Db::rollback();
+        } catch (\Exception $e) {
+            $db->rollback();
             throw $e;
         }
     }
@@ -156,12 +157,13 @@ class UserAuth
     /**
      * 获取用户信息
      * @param $user_id
-     * @return array|\PDOStatement|string|\think\Model|null
+     * @return array|string|Model|null
      * @throws
      */
     static public function info($user_id)
     {
-        $info = UserModel::where('id', $user_id)->field('id,nickname,realname,phone,create_time,update_time,last_login_time,mpr_user_id,wechat_user_id')->with(['mpr' => function ($query) {
+        $user = new UserModel();
+        $info = $user->where('id', $user_id)->field('id,mail,nickname,realname,phone,create_time,update_time,last_login_time,mpr_user_id,wechat_user_id')->with(['mpr' => function ($query) {
             return $query->field('id,nickname');
         }, 'wechat' => function ($query) {
             return $query->field('id,nickname,headimgurl');

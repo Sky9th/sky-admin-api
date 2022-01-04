@@ -34,13 +34,13 @@ class WechatUser extends Model
     {
         $exist = $this->where('openid', $user['openid'])->value('id');
         if ($exist) {
-            $res = $this->allowField(true)->save($user, ['openid' => $user['openid']]);
+            $res = $this->where(['openid' => $user['openid']])->save($user);
             if ($res) {
                 $id = $exist;
                 return $id;
             }
         } else {
-            $res = $this->allowField(true)->save($user);
+            $res = $this->save($user);
             if ($res) {
                 $id = $this->id;
                 return $id;
@@ -56,8 +56,7 @@ class WechatUser extends Model
      */
     public function unsubscribe($openid)
     {
-        $res = $this->allowField(true)->save(['subscribe' => 0], ['openid' => $openid]);
-        return $res;
+        return $this->where(['openid' => $openid])->save(['subscribe' => 0]);
     }
 
 }

@@ -36,7 +36,10 @@ return [
             'Message' => \app\chat\socket\listener\base\Message::class,
             'Close' => \app\chat\socket\listener\base\Close::class,
 
-            'Test' => \app\chat\socket\listener\Test::class
+            'Event' => \app\chat\socket\Dispatcher::class,
+            'Event.Auth' => \app\chat\socket\listener\Auth::class,
+            'Event.ToAll' => \app\chat\socket\listener\ToAll::class,
+            'Event.Typing' => \app\chat\socket\listener\Typing::class,
         ],
         'subscribe'     => [
         ],
