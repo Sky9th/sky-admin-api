@@ -18,7 +18,7 @@ class Dispatcher
     {
         // 自行触发事件
         // 为了防止事件名冲突，添加 swoole.websocket.Event. 前缀
-        var_dump($event);
+        var_dump('swoole.websocket.Event.' . Str::studly($event->type));
         event('swoole.websocket.Event.' . Str::studly($event->type),  $event->data);
     }
 }

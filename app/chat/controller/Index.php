@@ -5,6 +5,7 @@ namespace app\chat\controller;
 use app\common\model\sky9th\Chat;
 use app\common\model\sky9th\ChatTag;
 use app\common\model\sky9th\ChatUser;
+use app\chat\logic\Index as ChatLogic;
 
 class Index
 {
@@ -21,33 +22,36 @@ class Index
      * @throws
      */
     public function index () {
-        $chat = new Chat();
-        $id = input('id');
-        $where = [];
-        if($id) { $where['id'] = ['<=', $id]; }
-        $where['pid'] = 0;
-        $list = $chat->with(['user','reply'])->order('create_time asc')->where($where)->limit(15)->select();
-        return success('', $list);
+        $list = ChatLogic::index(input('id'));
+        return $list ? success('', $list) : error();
     }
 
     /**
      * 发送信息接口
+     * @param $input
+     * @param $user_id
      * @return array
      * @throws
      */
-    public function msg () {
-        $post = input('post.');
+    public function msg ($input = [], $user_id = 0) {
+        $input = $input ? : input('post.');
+        $user_id = $user_id ? : $this->user_id;
+        var_dump($input);
+        var_dump($user_id);
+        if(!$input || !$user_id){
+            return error();
+        }
         $chat = new Chat();
         $res = $chat->save([
-            'user_id' => $this->user_id,
-            'content' => $post['content'],
-            'tag' => $post['tag']
+            'user_id' => $user_id,
+            'content' => $input['content'],
+            'tag' => $input['tag']
         ]);
-        $id = $chat->getLastInsID();
+        var_dump($res);
         if ($res) {
-            @\app\chat\logic\Index::afterMsg($this->user_id, $post['tag']);
+            @ChatLogic::afterMsg($user_id, $input['tag']);
         }
-        return success('', $id);
+        return success('', $chat->id);
     }
 
     /**

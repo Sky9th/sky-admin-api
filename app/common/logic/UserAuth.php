@@ -79,14 +79,14 @@ class UserAuth
      * 注册用户
      * @param $wechat_user_id
      * @param $mpr_user_id
+     * @param $data
      * @return mixed
      * @throws
      */
-    static public function register($wechat_user_id, $mpr_user_id)
+    static public function register($wechat_user_id, $mpr_user_id, $data = [])
     {
         $exist = false;
         $user = new UserModel();
-        $db = new Db();
         if ($wechat_user_id) {
             $exist = $user->where('wechat_user_id', $wechat_user_id)->where('status', 1)->where('type', 2)->value('id');
         }
@@ -97,15 +97,15 @@ class UserAuth
         if ($exist) {
             return $exist;
         } else {
-            $db->startTrans();
+            $user->startTrans();
             try {
                 $model = new UserModel();
-                $model->save(['type' => 2, 'wechat_user_id' => $wechat_user_id, 'mpr_user_id' => $mpr_user_id]);
+                $model->save(array_merge($data, ['type' => 2, 'wechat_user_id' => $wechat_user_id, 'mpr_user_id' => $mpr_user_id]));
                 $user_id = $model->id;
-                $db->commit();
+                $user->commit();
                 return $user_id;
             } catch (\Exception $e) {
-                $db->rollback();
+                $user->rollback();
                 throw $e;
             }
         }

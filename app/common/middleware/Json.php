@@ -13,11 +13,11 @@ class Json
         if(Request::isOptions()){
             return $response;
         }
-        $code = $response->getCode();
-        if ($code == 200) {
-            return json($response->getData());
+        $data = $response->getData();
+        if ($data['code'] == 0) {
+            return json($data);
         } else {
-            return json($response->getData(), 400);
+            return json($data, 400);
         }
     }
 

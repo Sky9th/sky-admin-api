@@ -32,12 +32,11 @@ return [
         ],
         'listen'        => [
             'Open' => \app\chat\socket\listener\base\Open::class,
-            'Connect' => \app\chat\socket\listener\base\Message::class,
+            'Connect' => \app\chat\socket\listener\base\Connect::class,
             'Message' => \app\chat\socket\listener\base\Message::class,
             'Close' => \app\chat\socket\listener\base\Close::class,
 
             'Event' => \app\chat\socket\Dispatcher::class,
-            'Event.Auth' => \app\chat\socket\listener\Auth::class,
             'Event.ToAll' => \app\chat\socket\listener\ToAll::class,
             'Event.Typing' => \app\chat\socket\listener\Typing::class,
         ],
