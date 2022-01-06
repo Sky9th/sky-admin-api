@@ -163,7 +163,7 @@ class UserAuth
     static public function info($user_id)
     {
         $user = new UserModel();
-        $info = $user->where('id', $user_id)->field('id,mail,nickname,realname,phone,create_time,update_time,last_login_time,mpr_user_id,wechat_user_id')->with(['mpr' => function ($query) {
+        $info = $user->where('id', $user_id)->field('id,mail,nickname,avatar,realname,phone,create_time,update_time,last_login_time,mpr_user_id,wechat_user_id')->with(['mpr' => function ($query) {
             return $query->field('id,nickname');
         }, 'wechat' => function ($query) {
             return $query->field('id,nickname,headimgurl');

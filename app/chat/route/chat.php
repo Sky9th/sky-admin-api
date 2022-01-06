@@ -9,4 +9,4 @@ Route::group(function () {
 
 Route::group(function () {
     Route::rule('msg','index/msg');
-})->middleware(\app\common\middleware\Auth::class);;
+})->middleware(\app\common\middleware\Auth::class);

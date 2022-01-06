@@ -10,7 +10,7 @@ class Close extends Base {
         var_dump('-------Close event------');
         var_dump($this->fd);
         $this->broadcast($this->getUserList($this->fd), 'leaveCb');
-        unset($this->userList[$this->fd]);
+       $this->setUserList($this->fd, true);
     }
 
 }

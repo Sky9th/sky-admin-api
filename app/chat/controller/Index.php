@@ -25,7 +25,6 @@ class Index
         $list = ChatLogic::index(input('id'));
         return $list ? success('', $list) : error();
     }
-
     /**
      * 发送信息接口
      * @param $input

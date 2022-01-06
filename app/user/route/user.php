@@ -13,5 +13,7 @@ Route::group(function () {
 
 Route::group(function () {
     Route::rule('info','user/userInfo');
+    Route::rule('avatar','user/avatar');
     Route::rule('setNickname','user/setNickname');
+    Route::rule('setAvatar','user/setAvatar');
 })->middleware(\app\common\middleware\Auth::class);;

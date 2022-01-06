@@ -8,6 +8,9 @@ use think\swoole\Websocket;
 
 class Base {
 
+    public static string $CACHE_CHAT_USER_LIST = 'chat_user_list';
+    public static string $CACHE_CHAT_TYPING_LIST = 'chat_typing_list';
+
     public Websocket $websocket;
     public $session = [];
     public $userInfo = [];
@@ -17,7 +20,7 @@ class Base {
 
     public function __construct(Container $container){
         $this->websocket = $container->make(\think\swoole\Websocket::class);
-        $userList = cache('socket_user_list');
+        $userList = cache(Base::$CACHE_CHAT_USER_LIST);
         $this->userList = $userList ? $userList : [];
         $this->fd = $this->websocket->getSender();
         if (isset($this->userList[$this->fd])) {
@@ -36,18 +39,22 @@ class Base {
         }
     }
 
-    public function setUserList($fd) {
+    public function setUserList($fd, $remove = false) {
         foreach ($this->userList as $key => $value){
             if (isset($value['id']) && $this->user_id == $value['id']) {
                 unset($this->userList[$key]);
             }
         }
-        $this->userList[$fd] = array_merge([
-            "create_time" => time(),
-            "isLogin" => !!$this->session,
-            "sessionKey" => $this->session ? $this->session['sessionKey'] : ''
-        ], $this->userInfo);
-        cache('socket_user_list', $this->userList);
+        if($remove){
+            unset($this->userList[$fd]);
+        } else {
+            $this->userList[$fd] = array_merge([
+                "create_time" => time(),
+                "isLogin" => !!$this->session,
+                "sessionKey" => $this->session ? $this->session['sessionKey'] : ''
+            ], $this->userInfo);
+        }
+        cache(Base::$CACHE_CHAT_USER_LIST, $this->userList);
     }
 
     public function getUserList($fd = null) {

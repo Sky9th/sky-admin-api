@@ -19,7 +19,7 @@ class Index
         $chat = new ChatModel();
         if($id) { $where['id'] = ['<=', $id]; }
         $where['pid'] = 0;
-        return $chat->with(['user','reply'])->order('create_time asc')->where($where)->limit(15)->select();
+        return $chat->with(['user','reply'])->order('create_time desc')->where($where)->limit(15)->select();
     }
 
     /**

@@ -5,8 +5,8 @@ use think\swoole\websocket\socketio\Handler;
 return [
     'http'       => [
         'enable'     => true,
-        'host'       => '0.0.0.0',
-        'port'       => 8080,
+        'host'       => env('swoole.swoole_ip','0.0.0.0'),
+        'port'       => env('swoole.swoole_port',8080),
         'worker_num' => swoole_cpu_num(),
         'options'    => [],
     ],
@@ -46,8 +46,8 @@ return [
     'rpc'        => [
         'server' => [
             'enable'     => false,
-            'host'       => '0.0.0.0',
-            'port'       => 9000,
+            'host'       => env('swoole.swoole_rpc_ip','0.0.0.0'),
+            'port'       => env('swoole.swoole_rpc_port',9090),
             'worker_num' => swoole_cpu_num(),
             'services'   => [],
         ],
