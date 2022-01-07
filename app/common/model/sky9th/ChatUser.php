@@ -10,4 +10,8 @@ class ChatUser extends Client {
     public $thead = [];
     public $form = [];
 
+    public function user () {
+        return $this->belongsTo('app\common\model\common\User');
+    }
+
 }

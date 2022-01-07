@@ -83,7 +83,7 @@ class UserAuth
      * @return mixed
      * @throws
      */
-    static public function register($wechat_user_id, $mpr_user_id, $data = [])
+    static public function register($data = [], $wechat_user_id = 0, $mpr_user_id = 0)
     {
         $exist = false;
         $user = new UserModel();
@@ -109,6 +109,20 @@ class UserAuth
                 throw $e;
             }
         }
+    }
+
+    /**
+     * 重置密码
+     * @param $data
+     * @return mixed
+     * @throws
+     */
+    static public function resetPassword($data)
+    {
+        $user = new UserModel();
+        $exist = $user->where('mail', $data['mail'])->where('status', 1)->where('type', 2)->find();
+        $result = $exist->save(['password' => $data['password']]);
+        return $result ? $exist->id : false;
     }
 
     /**

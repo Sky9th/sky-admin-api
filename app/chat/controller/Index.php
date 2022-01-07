@@ -6,6 +6,7 @@ use app\common\model\sky9th\Chat;
 use app\common\model\sky9th\ChatTag;
 use app\common\model\sky9th\ChatUser;
 use app\chat\logic\Index as ChatLogic;
+use think\Db;
 
 class Index
 {
@@ -35,8 +36,6 @@ class Index
     public function msg ($input = [], $user_id = 0) {
         $input = $input ? : input('post.');
         $user_id = $user_id ? : $this->user_id;
-        var_dump($input);
-        var_dump($user_id);
         if(!$input || !$user_id){
             return error();
         }
@@ -46,7 +45,6 @@ class Index
             'content' => $input['content'],
             'tag' => $input['tag']
         ]);
-        var_dump($res);
         if ($res) {
             @ChatLogic::afterMsg($user_id, $input['tag']);
         }
@@ -59,8 +57,13 @@ class Index
      * @throws
      */
     public function people () {
+        $nickname = input('get.nickname','','');
+        $where = [];
+        if ($nickname) {
+            $where[] = ['b.nickname','like','%'.$nickname.'%'];
+        }
         $chat = new ChatUser();
-        $list = $chat->paginate(15);
+        $list = $chat->field('b.id,nickname,avatar')->where($where)->alias('a')->join('common_user b', 'a.user_id = b.id')->paginate(15);
         return success('', $list);
     }
 

@@ -17,4 +17,9 @@ class User extends \app\common\validate\sys\User
         'repassword|确认密码'=>'requireWith:mail|confirm:password',
     ];
 
+    protected $scene = [
+        'register' => ['mail','password','repassword'],
+        'reset' => ['password','repassword']
+    ];
+
 }

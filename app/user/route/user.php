@@ -5,6 +5,7 @@ Route::rule('upload','index/general');
 
 Route::group(function () {
     Route::rule('getVerify','auth/aliVerifyCode');
+    Route::rule('setPassword','auth/setPassword');
 
     Route::rule('register','auth/register');
     Route::rule('login','auth/login');
